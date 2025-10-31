@@ -1324,6 +1324,82 @@ gamma    =  a11*a22*a33 +2*a12*a23*a13-a11*a23*a23-a12*a12*a33-a13*a13*a22;
 	    hcat(T1,T2);
         end
 
+        # Derivative of Spherical Harmonic with Respect to $\theta$ and $\phi$
+
+        function  DerivativeSH(Y)
+
+	          SinTheta  = ((real(Y[2])^2 + imag(Y[2])^2))^0.5;
+	          ExpVarphi = SinTheta != 0.0 ? Y[2]/SinTheta : 0;
+	          CotTheta  = SinTheta != 0.0 ? (Y[3])/(SinTheta*(2^0.5)) : 0; 
+	          DerivationTheta   = Complex.(zeros(length(Y))); 
+	          DerivationVarphi  = Complex.(zeros(length(Y)));
+	
+	          N = Int64(sqrt(length(Y)));
+	          Base_ = 0; 
+	          for I in 1:N  
+	            for J in 1:((I-1)*2)
+	                m = J - I;
+	                DerivationTheta[Base_+J] = m*CotTheta*Y[Base_+J] + ((I-m-1)*(I+m))^0.5*ExpVarphi*Y[Base_+J+1];
+	                DerivationVarphi[Base_+J]= m*im*Y[Base_+J];
+	            end
+	            J = ((I-1)*2)+1; 
+	            m = J - I;
+	            DerivationTheta[Base_+J]=m*CotTheta*Y[Base_+J];
+	            DerivationVarphi[Base_+J]= m*im*Y[Base_+J];
+	            Base_ = I*I; 
+	          end 
+	          
+	          return  hcat(DerivationTheta,DerivationVarphi); 
+       end
+
+        # Derivative of Spherical Harmonic with Respect to Cartesian coordinates, DR is (df(r)/dr)/f(r)
+
+         function  DerivativeSH_XYZ(Y,DR)
+
+		          ReciprocalRadii   = (Y[3]*Y[3]-Y[2]*Y[4]*2)/(0.25*(3/pi));
+		          ReciprocalRadii   = ReciprocalRadii != 0.0 ? (ReciprocalRadii)^(-(1/2)) : 0;
+		          SinTheta  = ((real(Y[2])^2 + imag(Y[2])^2))^0.5;
+		          ExpVarphi = SinTheta != 0.0 ? Y[2]/SinTheta : 0;
+		          CotTheta  = SinTheta != 0.0 ? (Y[3])/(SinTheta*(2^0.5)) : 0; 
+		
+		          SinVarphi         = SinTheta != 0.0 ? -imag(Y[2])/SinTheta : 0;
+		          CosVarphi         = SinTheta != 0.0 ? real(Y[2])/SinTheta : 0;
+		          CosTheta          = ReciprocalRadii*(Y[3]/((1/2)*((3/pi)^(1/2)))); 
+		          DerivationX       = Complex.(zeros(length(Y))); 
+		          DerivationY       = Complex.(zeros(length(Y)));
+		          DerivationZ       = Complex.(zeros(length(Y)));
+		          DR                = Complex.(DR);
+		          SinTheta  = ReciprocalRadii*(SinTheta/(0.5*((3/(pi*2))^0.5)));
+		          SinVarphiSlashSinTheta  = SinTheta  != 0.0 ? SinVarphi/SinTheta : 0; 
+		          CosVarphiSlashSinTheta  = SinTheta != 0.0 ?  CosVarphi/SinTheta : 0; 
+		
+		          N = Int64(sqrt(length(Y)));
+		          Base_ = 0; 
+		          for I in 1:N  
+		            for J in 1:((I-1)*2)
+		                m = J - I;
+		                DerivationTheta  = m*CotTheta*Y[Base_+J] + ((I-m-1)*(I+m))^0.5*ExpVarphi*Y[Base_+J+1]
+		                DerivationVarphi = m*im*Y[Base_+J];
+		                DerivationX[Base_+J] = DR[Base_+J]*Y[Base_+J]*SinTheta*CosVarphi + ReciprocalRadii*(CosTheta*CosVarphi*DerivationTheta - SinVarphiSlashSinTheta*DerivationVarphi);
+		                DerivationY[Base_+J] = DR[Base_+J]*Y[Base_+J]*SinTheta*SinVarphi + ReciprocalRadii*(CosTheta*SinVarphi*DerivationTheta + CosVarphiSlashSinTheta*DerivationVarphi);
+		                DerivationZ[Base_+J] = DR[Base_+J]*Y[Base_+J]*CosTheta + ReciprocalRadii*(-SinTheta*DerivationTheta);
+		            end
+		            J = ((I-1)*2)+1; 
+		            m = J - I;
+		            DerivationTheta  = m*CotTheta*Y[Base_+J];
+		            DerivationVarphi = m*im*Y[Base_+J];
+		            DerivationX[Base_+J] = DR[Base_+J]*Y[Base_+J]*SinTheta*CosVarphi + ReciprocalRadii*(CosTheta*CosVarphi*DerivationTheta - SinVarphiSlashSinTheta*DerivationVarphi);
+		            DerivationY[Base_+J] = DR[Base_+J]*Y[Base_+J]*SinTheta*SinVarphi + ReciprocalRadii*(CosTheta*SinVarphi*DerivationTheta + CosVarphiSlashSinTheta*DerivationVarphi);
+		            DerivationZ[Base_+J] = DR[Base_+J]*Y[Base_+J]*CosTheta + ReciprocalRadii*(-SinTheta*DerivationTheta);
+		
+		            Base_ = I*I; 
+		          end 
+		          
+		          return  hcat(DerivationX,DerivationY,DerivationZ); 
+          end
+
+
+
 
 
          function DecodeMatrix(V2,V3,n)
