@@ -57,7 +57,7 @@ N=2:
 
      equivalentFeatures.IncreaseDegree(S2,n);
      
-This function will increase the degree of spherical harmonic tensor by n, S2 should be a [monopole,dipole] spherical harmonic tensor. 
+This function increases the degree of the spherical harmonic tensor by n. S2 should be a spherical harmonic tensor [monopole,dipole] derived from a normalized Cartesian coordinate vector.
 
      equivalentFeatures.SelfProduct(V1)
 
@@ -76,8 +76,16 @@ e.g.
       include("./equivalentFeatures.jl")
       using  .equivalentFeatures
       equivalentFeatures.Initial();  
-
-      V1 =[1.0,0.0043477849927746155,0.0,0.9999905483381614,0.11]; 
+      C1 =  [0.0043477849927746155,0.0,0.9999905483381614];
+      R1 =  norm(C1,2);
+      C1 =  C1/R1; # Cartesian coordinate normalization.
+      V1 =  vcat(1, C1);
+      
+      C2 =  [0.772027518982468,0.33454525822573616,0.5404192632877276];
+      R2 =  norm(C2,2);
+      C2 =  C2/R2;# Cartesian coordinate normalization.
+      V2 =  vcat(1, C2);
+      
       V2 =[1.0,0.772027518982468,0.33454525822573616,0.5404192632877276];
       
       S1 = equivalentFeatures.CtoS_Encode(V1,2);
@@ -108,10 +116,24 @@ This function will return a matrix that can be used to convert the invariant cod
 
 e.g.
       using LinearAlgebra
+
+
+      C1 =  [0.0043477849927746155,0.0,0.9999905483381614];
+      R1 =  norm(C1,2);
+      C1 =  C1/R1; # Cartesian coordinate normalization.
+      V1 =  vcat(1, C1);
       
-      V1 =[1.0,0.0043477849927746155,0.0,0.9999905483381614,0.11]; 
-      V2 =[1.0,0.772027518982468,0.33454525822573616,0.5404192632877276];
-      V3 =[1.0,0.654676578,0.7654334543987,0.765432216890];
+      C2 =  [0.772027518982468,0.33454525822573616,0.5404192632877276];
+      R2 =  norm(C2,2);
+      C2 =  C2/R2;# Cartesian coordinate normalization.
+      V2 =  vcat(1, C2);
+
+      C3 =  [0.654676578,0.7654334543987,0.765432216890];
+      R3 =  norm(C3,2);
+      C3 =  C3/R3;# Cartesian coordinate normalization.
+      V3 =  vcat(1, C3);
+      
+
       
       V1 = equivalentFeatures.CtoS_Encode(V1,2);
       V2 = equivalentFeatures.CtoS_Encode(V2,2);
@@ -123,14 +145,14 @@ e.g.
        
        W3 = equivalentFeatures.W3jProduct(V1,V2,V3)
        M  = equivalentFeatures.DecodeMatrix(V2,V3) 
-       norm(M*W3-V1,2);
+       norm(M*W3-V1,2)
 
  V1, V2, V3 are three original spherical harmonic tensors.
  W3 is the invariant encoding derived from the W3j product of these three tensors. 
  M is the matrix that converts the invariant coding (W3) into the original spherical harmonic tensor (V3).
  
  
-       equivalentFeatures.W3jProduct(V1,V2,V3,n1,n2); 
+      equivalentFeatures.W3jProduct(V1,V2,V3,n1,n2); 
        
 This function transforms three spherical harmonic tensors into a vector that is invariant to rotation, only shell n1 for V1 is selected, and for three shells wigner production from V1,V2,V3 with degrees s1,s2,s3 satisfied that s1 = n1, and s1 < abs(s2-s3)+n2.
 
@@ -170,7 +192,7 @@ e.g
       
       MM =  equivalentFeatures.ReferencesExtract(V_input)
       v1 = vcat(1,MM[:,1]);
-      v2 = vcat(1,MM[:,2]);
+      v2 = vcat(1,MM[:,2]);# MM[:,1] and MM[:,2] have been normalize.
       v2 = equivalentFeatures.RStoCS_Encode(v2,2);
       v1 = equivalentFeatures.RStoCS_Encode(v1,2);
       v1 = equivalentFeatures.IncreaseDegree(v1,1);
@@ -181,8 +203,12 @@ e.g
       
       
       MM=equivalentFeatures.SelfProductMatrix(V_input,2,2)
-      v1 = vcat(1,MM[1,:]);
-      v2 = vcat(1,MM[2,:]); 
+      ReciprocalRadii   = (MM[1,2]*MM[1,2]-MM[1,1]*MM[1,3]*2)/(0.25*(3/pi));
+      ReciprocalRadii   = (ReciprocalRadii)^(-(1/2));
+      v1 = vcat(1,MM[1,:].*ReciprocalRadii);
+      ReciprocalRadii   = (MM[2,2]*MM[2,2]-MM[2,1]*MM[2,3]*2)/(0.25*(3/pi));
+      ReciprocalRadii   = (ReciprocalRadii)^(-(1/2));
+      v2 = vcat(1,MM[2,:].*ReciprocalRadii);   # normalize MM[1,:] and MM[2,:]. 
       v2 = equivalentFeatures.RStoCS_Encode(v2,2);
       v1 = equivalentFeatures.RStoCS_Encode(v1,2);
       v1 = equivalentFeatures.IncreaseDegree(v1,1);
@@ -209,6 +235,46 @@ e.g.
       S1 = equivalentFeatures.CtoS_Encode(V1);
       S2 = equivalentFeatures.CtoS_Encode(V2);
       equivalentFeatures.ProductEncode(S1,S2);
+S1 and S2 are two spherical harmonic tensors share the same centre.
+
+       equivalentFeatures.DerivativeSH(Y)
+
+This function will return the derivative of a Spherical Harmonic tensor with respect to $\theta$ and $\phi$.
+
+      equivalentFeatures.DerivativeSH_XYZ(Y,DR,ReciprocalRadii,ReciprocalF)
+      
+This function returns the derivative of a spherical harmonic tensor with respect to Cartesian coordinates. DR is a vector whose elements are fractions of the derivative of radius function and radius function((df(r)/dr)/f(r)). ReciprocalRadii is the reciprocal of the radius in Cartesian coordinates (1/r), ReciprocalF is the reciprocal of the radius function. 
+
+e.g.
+
+      x=0.31
+      y=0.14
+      z=0.41
+      r = (x^2+y^2+z^2)^0.5;
+      z  = (z/r);
+      x  = (x/r);
+      y  = (y/r);
+      V3 =[1,x,y,z]
+      S = equivalentFeatures.CtoS_Encode(V3,2);
+      S = equivalentFeatures.IncreaseDegree(S2,1);
+      S = equivalentFeatures.IncreaseDegree(S2,1);
+      f0 = 1;
+      f1 = r;
+      f2 = r*r;
+      f3 = r*r*r; 
+      S[1]     = S[1]*f0;
+      S[2:4]   = S[2:4]*f1; 
+      S[5:9]   = S[5:9]*f2; 
+      S[10:16] = S[10:16]*f3; 
+      equivalentFeatures.DerivativeSH(S);
+      D = zeros(16);
+      D[2:4] .= 1.0;  #f1'
+      D[5:9] .= 2*r;  #f2'
+      D[10:16] .= 3*r*r; #f3'
+      ReciprocalRadii = 1/r; 
+      ReciprocalF     = 1/f1;
+      equivalentFeatures.DerivativeSH(Y,DR,ReciprocalRadii,ReciprocalF)
+The DerivativeSH function returns a matrix with two columns. One column indicates the θ and the other indicates the φ.  DerivativeSH_XYZ returns a three-column matrix indicating X, Y, and Z, respectively. 
 
 # Installation (c++)
 
