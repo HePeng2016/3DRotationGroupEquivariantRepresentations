@@ -1,7 +1,7 @@
 # Diagram
 
 
-![Image](https://github.com/user-attachments/assets/d8b3a44d-5c61-4f3d-a28f-839e8c362539)
+![Image](https://github.com/user-attachments/assets/ced64bb4-0e62-4244-b2ee-b0b2a32dcc0a)
 
 
 # Introduction
