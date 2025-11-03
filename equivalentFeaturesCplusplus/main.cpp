@@ -25,9 +25,25 @@ int main()
     std::vector<double> V_sum = {0.8462843753216346,0.2357721745044485,0.1715792182533041,-0.08330559405890413,0.15519925847179628,-0.24080530062633895,0.4559079877665936,-0.847122639482693,-0.3853557246105484};
 //    std::vector<double> TT = Test.ProductEncode(Test.RStoCS_Encode(V1,3),Test.RStoCS_Encode(V2,3),5);
 //    std::vector<double> TT = Test.SelfProductPairwise(Test.RStoCS_Encode(V1,3),6,2);
-      std::vector<double> TT = Test.ProductEncode(Test.RStoCS_Encode(V1,3),Test.RStoCS_Encode(V2,3),3);  
-      std::vector<std::vector<std::complex<double>>> TTT =  Test.SelfProductMatrix(V_2,3,2); 
+      std::vector<double> TT = Test.ProductEncode(Test.RStoCS_Encode(V1,3),Test.RStoCS_Encode(V2,3),3);
+      std::vector<std::vector<std::complex<double>>> TTT =  Test.SelfProductMatrix(V_2,3,2);
+      std::vector<std::complex<double>> S2 = {
+	          {0.28209479177387814, 0.0},
+		      {0.10713552128272251, -0.048368181166014684},
+		          {0.5748596526258442, 0.0},
+			      {-0.10713552128272251, -0.048368181166014684},
+			          {0.029572706782343073, -0.033538029951111326},
+				      {0.28185427219504855, -0.12724797841762917},
+				          {0.8366481389933829, 0.0},
+					      {-0.28185427219504855, -0.12724797841762917},
+					          {0.029572706782343073, 0.033538029951111326}
+      };
 
+      std::vector< std::complex<double> > D  = {0.0, 1.0, 1.0, 1.0, 2.449489742783178, 2.449489742783178, 2.449489742783178, 2.449489742783178, 2.449489742783178};
+      double ReciprocalRadii = 0.8164797044666512;
+      double ReciprocalF     = 0.8164965809277261;
+      std::vector<std::vector<std::complex<double>>> Result  = Test.DerivativeSH(S2);
+      std::vector<std::vector<std::complex<double>>> Result2 = Test.DerivativeSH_XYZ(S2,D,ReciprocalRadii,ReciprocalF);
 
 //    TT = Test.SelfProduct(V_3,2,2);
 //    std::cout << Test.RStoCS_Encode(V3,3) << std::endl;
