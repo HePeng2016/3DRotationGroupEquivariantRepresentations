@@ -12,7 +12,7 @@
 #include "tuple"
 #include "string"
 #include "wigner/wigner_3nj.hpp"
-
+#define  cdouble complex<double>
 struct Index_t {
     int16_t m1;
     int16_t m2;
@@ -48,8 +48,13 @@ class equivalentFeatures
     std::vector< std::vector<double> > ReferencesExtract(const  std::vector<double>& VR);
     std::vector<double> ProductEncode(const std::vector<std::complex<double>>& V1, const std::vector<std::complex<double>>& V2, int n);
     std::vector<double> ProductEncodePairwise(const std::vector<std::complex<double>>& V1, const std::vector<std::complex<double>>& V2, int n);
-    std::vector<std::vector<std::complex<double>>> SelfProductMatrix(const std::vector<std::complex<double>>& V, int n, int n2); 
-
+    std::vector<std::vector<std::complex<double>>> SelfProductMatrix(const std::vector<std::complex<double>>& V, int n, int n2);
+    std::vector<std::vector<std::complex<double>>> DerivativeSH(const std::vector<std::complex<double>>& Y);
+    std::vector<std::vector<std::complex<double>>> DerivativeSH_XYZ(const std::vector<std::complex<double>>& Y, const std::vector<std::complex<double>>& DR, double ReciprocalRadii, double ReciprocalF);
 };
+
+
+
+
 
 
