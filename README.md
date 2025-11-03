@@ -602,4 +602,32 @@ e.g.
     }
 
   Va,Vb are same as Va_,Vb_ in rotational equivariant way,  ProductEncode and ProductEncodePairwise functions are applied in Va,Vb and Va_,Vb_, the same results are yielded. 
- 
+
+     vector< vector< complex<double> > > DerivativeSH(const vector< complex<double>>& Y) 
+     
+Y is the spherical harmonic tensors for obtaining the derivatives, the result is the derivatives of this spherical harmonic tensors respect to $\theta$ and $\phi$.   
+
+    vector< vector< complex<double > > > DerivativeSH_XYZ(const vector< complex<double>>& Y, const vector< complex<double>>& DR, double ReciprocalRadii, double ReciprocalF)
+    
+  The S2 spherical harmonic tensors is the input for the the derivatives extraction. D is a list in which each element is the ratio of the derivative of the radii function to the radii function itself. 'ReciprocalRadii' is the multiplicative inverse of 'Radii', and 'ReciprocalF' is the multiplicative inverse of the 'Radii Function'.  The returns are the derivatives of spherical harmonics with respect to the Cartesian coordinates X, Y and Z.
+  e.g.
+
+  
+         std::vector<std::complex<double>> S2 = {
+	       {0.28209479177387814, 0.0},
+		  {0.10713552128272251, -0.048368181166014684},
+		  {0.5748596526258442, 0.0},
+		  {-0.10713552128272251, -0.048368181166014684},
+		  {0.029572706782343073, -0.033538029951111326},
+		  {0.28185427219504855, -0.12724797841762917},
+		  {0.8366481389933829, 0.0},
+		  {-0.28185427219504855, -0.12724797841762917},
+	       {0.029572706782343073, 0.033538029951111326}
+         };
+         std::vector< std::complex<double> > D  = {0.0, 1.0, 1.0, 1.0, 2.449489742783178, 2.449489742783178, 2.449489742783178, 2.449489742783178, 2.449489742783178};
+         double ReciprocalRadii = 0.8164797044666512;
+         double ReciprocalF     = 0.8164965809277261;
+         std::vector<std::vector<std::complex<double>>> Result  = Test.DerivativeSH(S2);
+         std::vector<std::vector<std::complex<double>>> Result2 = Test.DerivativeSH_XYZ(S2,D,ReciprocalRadii,ReciprocalF);
+
+
