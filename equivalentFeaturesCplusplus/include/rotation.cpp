@@ -67,8 +67,8 @@ void equivalentFeatures::Initial() {
 
                 if (j3 < d3) {
                             int m3 = -(m1 + m2);
-                            
-                            
+
+
 
                             if (std::abs(m3) <= j3) {
                                 W3JTableI[j1][j2][j3].push_back(Index_t{m1,m2});
@@ -293,14 +293,14 @@ std::vector<std::complex<double>> equivalentFeatures::W3jProduct(const std::vect
                                               const std::vector<std::complex<double>>& V3,
                                               int n1, int n2) {
     int RInvariantVSize = 0;
-    int32_t d2 = static_cast<int32_t>(std::floor(std::pow(V2.size(), 0.5))); 
+    int32_t d2 = static_cast<int32_t>(std::floor(std::pow(V2.size(), 0.5)));
     int32_t d3 = static_cast<int32_t>(std::floor(std::pow(V3.size(), 0.5)));
 
-    
+
 
     for (int I = 1; I <= d2; ++I) {
-            RInvariantVSize += std::max(std::min(d3 - 1, n1 + I - 2) - std::abs(n1 - I) + 1, 0) 
-                          - std::max(0, std::min(I + n1 - n2 - 1, std::min(d3 - 1, n1 + I - 2) + 1) 
+            RInvariantVSize += std::max(std::min(d3 - 1, n1 + I - 2) - std::abs(n1 - I) + 1, 0)
+                          - std::max(0, std::min(I + n1 - n2 - 1, std::min(d3 - 1, n1 + I - 2) + 1)
                           - std::max(I + n2 - n1 + 1, std::abs(n1 - I) + 1) + 1);
     }
 
@@ -314,10 +314,10 @@ std::vector<std::complex<double>> equivalentFeatures::W3jProduct(const std::vect
     for (int J2 = 0; J2 < d2; ++J2) {
         for (int J3 = std::abs(J2 - J1); J3 <= std::min((J1 + J2),d2-1); ++J3) {
 
-        if( J1 >= std::abs(J2-J3) + n2) 
+        if( J1 >= std::abs(J2-J3) + n2)
         {
             J3 = std::max(J3,J2 + n1 - n2-2);
-            continue; 
+            continue;
         }
          auto TempI = W3JTableI[J1][J2][J3];
          auto TempC = W3JTableC[J1][J2][J3];
@@ -344,10 +344,10 @@ std::vector<std::complex<double>> equivalentFeatures::W3jProduct(const std::vect
 std::vector<double> equivalentFeatures::W3jProductCToR(const std::vector<std::complex<double>>& InvariantV, int n1, int d2, int d3,int n2) {
 
     int RInvariantVSize = 0;
- 
+
     for (int I = 1; I <= d2; ++I) {
-            RInvariantVSize += std::max(std::min(d3 - 1, n1 + I - 2) - std::abs(n1 - I) + 1, 0) 
-                          - std::max(0, std::min(I + n1 - n2 - 1, std::min(d3 - 1, n1 + I - 2) + 1) 
+            RInvariantVSize += std::max(std::min(d3 - 1, n1 + I - 2) - std::abs(n1 - I) + 1, 0)
+                          - std::max(0, std::min(I + n1 - n2 - 1, std::min(d3 - 1, n1 + I - 2) + 1)
                           - std::max(I + n2 - n1 + 1, std::abs(n1 - I) + 1) + 1);
     }
 
@@ -359,10 +359,10 @@ std::vector<double> equivalentFeatures::W3jProductCToR(const std::vector<std::co
     for (int J2 = 0; J2 < d2; ++J2) {
       for (int J3 = std::abs(J2 - J1); J3 <= std::min((J1 + J2),d2-1); ++J3) {
 
-        if( J1 >= std::abs(J2-J3) + n2) 
+        if( J1 >= std::abs(J2-J3) + n2)
         {
             J3 = std::max(J3,J2 + n1 - n2-2);
-            continue; 
+            continue;
         }
 
         RInvariantV[Index] = std::real(std::pow(std::complex<double>(0, 1), J1 - J2 - J3 ) * InvariantV[Index]);
@@ -377,10 +377,10 @@ std::vector<double> equivalentFeatures::W3jProductCToR(const std::vector<std::co
 std::vector<std::complex<double>> equivalentFeatures::W3jProductRToC(const std::vector<double>& InvariantV, int n1,int d2, int d3, int n2) {
     int CInvariantVSize = 0;
 
- 
+
     for (int I = 1; I <= d2; ++I) {
-            CInvariantVSize += std::max(std::min(d3 - 1, n1 + I - 2) - std::abs(n1 - I) + 1, 0) 
-                          - std::max(0, std::min(I + n1 - n2 - 1, std::min(d3 - 1, n1 + I - 2) + 1) 
+            CInvariantVSize += std::max(std::min(d3 - 1, n1 + I - 2) - std::abs(n1 - I) + 1, 0)
+                          - std::max(0, std::min(I + n1 - n2 - 1, std::min(d3 - 1, n1 + I - 2) + 1)
                           - std::max(I + n2 - n1 + 1, std::abs(n1 - I) + 1) + 1);
     }
 
@@ -392,15 +392,15 @@ std::vector<std::complex<double>> equivalentFeatures::W3jProductRToC(const std::
     for (int J2 = 0; J2 < d2; ++J2) {
       for (int J3 = std::abs(J2 - J1); J3 <= std::min((J1 + J2),d2-1); ++J3) {
 
-         if( J1 >= std::abs(J2-J3) + n2) 
+         if( J1 >= std::abs(J2-J3) + n2)
          {
                J3 = std::max(J3,J2 + n1 - n2-2);
-               continue; 
+               continue;
          }
 
          CInvariantV[Index] = std::pow(std::complex<double>(0, 1), -J1 + J2 + J3 ) * InvariantV[Index];
          Index++;
-         
+
         }
     }
 
@@ -420,7 +420,7 @@ std::vector<double> equivalentFeatures::SelfProduct(const std::vector<std::compl
         for (int J2 = std::max(J1-d2+1,1);J2 <= std::min(d2-1+J1,d2); ++J2) {
             int Begin = std::max({(J1 - J2 + 1), J2, (J2 - n2 + J1)});
             int End = std::min(J1 + J2 - 1, d2);
-   
+
 
             for (int I = Begin; I <= End; I += 1) {
 
@@ -623,7 +623,7 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
 
         if(J1>1)
           size_sum = size__ * (size__ + 1) / 2 + size_sum;
-        else 
+        else
           size_sum = size__  + size_sum;
     }
 
@@ -639,7 +639,7 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
         for (int J2 = std::max(J1-d2+1,1); J2 <= std::min(d2-1+J1,d2); ++J2) {
             int Begin = std::max({J1 - J2 + 1, J2, J2 - n2 + J1});
             int End = std::min(J1 + J2 - 1, d2);
-      
+
 
             for (int I = Begin; I <= End; I += 1) {
 
@@ -670,13 +670,13 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
                     }
                 }
 
-                DiffJ[Index] = J; 
+                DiffJ[Index] = J;
                 Index++;
             }
         }
         if (Index > 1) {
 
-            int Len = J1 * J1 - (J1 - 1) * (J1 - 1); 
+            int Len = J1 * J1 - (J1 - 1) * (J1 - 1);
 
             for (int I_3 = 1; I_3 <= Index; ++I_3) {
 
@@ -694,8 +694,8 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
                           size_sum++;
                       }
                     }
-                  }else 
-                   {      
+                  }else
+                   {
                           std::complex<double> Self_Product = std::inner_product(LTmConj.begin(), LTmConj.begin() + Len, LTm[I_3-1].begin(), std::complex<double>(0.0, 0.0));
                           Result_[size_sum] = std::real(Self_Product);
                           size_sum++;
@@ -705,7 +705,7 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
             }
         }
     }
-    return std::vector<double>(Result_.begin(), Result_.begin() + size_sum);    
+    return std::vector<double>(Result_.begin(), Result_.begin() + size_sum);
 }
 
 
@@ -718,16 +718,16 @@ std::vector<double> equivalentFeatures::ProductEncode(const std::vector<std::com
     int SIZE = std::min({d1 + d2 - 1, N});
 
     std::vector<std::complex<double>> LTm(SIZE * SIZE, 0.0);
-    std::vector<std::complex<double>> LTmConj(SIZE * SIZE, 0.0); 
+    std::vector<std::complex<double>> LTmConj(SIZE * SIZE, 0.0);
 
     int LENGTH = 0;
     for (int J3 = std::abs(d1 - d2) + 1; J3 <= std::min({d1 + d2 - 1, N}); ++J3) {
         for (int J1 = std::max({J3 - d2 + 1, 1}); J1 <= std::min({J3 + d2 - 1, d1}); ++J1) {
             for (int J2 = std::max({J3 - J1 + 1, J1 - J3 + 1, 1}); J2 <= std::min({J3 + J1 - 1,d2}); ++J2) {
-                   if( J3 > std::abs(J1-J2) + n) 
+                   if( J3 > std::abs(J1-J2) + n)
                     {
                          J2 = std::max(J2,J1 + N - n-1);
-                         continue; 
+                         continue;
                     }
 
                 LENGTH++;
@@ -738,16 +738,16 @@ std::vector<double> equivalentFeatures::ProductEncode(const std::vector<std::com
     std::vector<double> pseudoInput(LENGTH);
     int I = 0;
     for (int J3 = std::abs(d1 - d2) + 1; J3 <= std::min({d1 + d2 - 1, N}); ++J3) {
-        int Index = 1; 
+        int Index = 1;
         int BASE = (J3 - 1) * (J3 - 1);
 
         for (int J1 = std::max({J3 - d2 + 1, 1}); J1 <= std::min({J3 + d2 - 1, d1}); ++J1) {
             for (int J2 = std::max({J3 - J1 + 1, J1 - J3 + 1, 1}); J2 <= std::min({J3 + J1 - 1,d2}); ++J2) {
 
-                if( J3 > std::abs(J1-J2) + n) 
+                if( J3 > std::abs(J1-J2) + n)
                 {
                     J2 = std::max(J2,J1 + N - n-1);
-                    continue; 
+                    continue;
                 }
                 const auto& TempI = W3JTableI[J1-1][J2-1][J3-1];
                 const auto& TempC = W3JTableC[J1-1][J2-1][J3-1];
@@ -785,50 +785,50 @@ std::vector<double> equivalentFeatures::ProductEncodePairwise(const std::vector<
     int d2 = static_cast<int>(std::floor(std::sqrt(V2.size())));
     int SIZE = std::min({d1 + d2 - 1, N});
     int size__ = 0;
-    int Max_size = 0; 
-    int size_sum = 0; 
+    int Max_size = 0;
+    int size_sum = 0;
     int LENGTH = 0;
 
     for (int J3 = std::abs(d1 - d2) + 1; J3 <= std::min({d1 + d2 - 1, N}); J3++) {
         size__ = 0;
         for (int J1 = std::max({J3 - d2 + 1,1}); J1 <= std::min({J3 + d2 - 1, d1}); J1++) {
             for (int J2 = std::max({J3 - J1 + 1, J1 - J3 + 1, 1}); J2 <= std::min({J3 + J1 - 1,d2}); J2++) {
-                    if( J3 > std::abs(J1-J2) + n) 
+                    if( J3 > std::abs(J1-J2) + n)
                     {
                         J2 = std::max(J2,J1 + N - n-1);
-                        continue; 
+                        continue;
                     }
                 size__++;
             }
         }
         if (Max_size < size__) {
-            Max_size = size__; 
+            Max_size = size__;
         }
         if (J3 > 1) {
-            LENGTH = static_cast<int>(size__ * (size__ + 1) / 2) + LENGTH; 
+            LENGTH = static_cast<int>(size__ * (size__ + 1) / 2) + LENGTH;
         } else {
             LENGTH = size__ + LENGTH;
         }
         if (J3 == 2) {
-            LENGTH = LENGTH - 2; 
+            LENGTH = LENGTH - 2;
         }
     }
 
     std::vector<std::vector<std::complex<double>>> LTm(Max_size, std::vector<std::complex<double>>(SIZE * SIZE, 0));
-    std::vector<std::complex<double>> LTmConj(SIZE * SIZE, 0.0);  
+    std::vector<std::complex<double>> LTmConj(SIZE * SIZE, 0.0);
     std::vector<double> DiffJ(Max_size, 0);
     std::vector<double> pseudoInput(LENGTH, 0);
 
     int I = 1;
     for (int J3 = std::abs(d1 - d2) + 1; J3 <= std::min({d1 + d2 - 1,N}); J3++) {
-        int Index = 1;  
+        int Index = 1;
         int BASE = (J3 - 1) * (J3 - 1);
         for (int J1 = std::max({J3 - d2 + 1, 1}); J1 <= std::min({J3 + d2 - 1, d1}); J1++) {
             for (int J2 = std::max({J3 - J1 + 1, J1 - J3 + 1, 1}); J2 <= std::min({J3 + J1 - 1, d2}); J2++) {
-                if( J3 > std::abs(J1-J2) + n) 
+                if( J3 > std::abs(J1-J2) + n)
                 {
                     J2 = std::max(J2,J1 + N - n-1);
-                    continue; 
+                    continue;
                 }
                 auto TempI = W3JTableI[J1-1][J2-1][J3-1];
                 auto TempC = W3JTableC[J1-1][J2-1][J3-1];
@@ -840,13 +840,13 @@ std::vector<double> equivalentFeatures::ProductEncodePairwise(const std::vector<
                     int I2 = (J2 - 1) * (J2 - 1) + m2 + J2;
                     int I3 = (J3 - 1) * (J3 - 1) + m3 + J3;
                     LTm[Index-1][I3 - BASE-1] += V1[I1-1] * V2[I2-1] * TempC[I_1] * (std::sqrt(2 * J3-1) * std::pow(-1, J1 - J2 - m3)); // wigner3J coefficient to Clebsh-Gordan coefficient
-                }  
-                DiffJ[Index-1] = std::abs(J1 - J2); 
+                }
+                DiffJ[Index-1] = std::abs(J1 - J2);
                 Index++;
-                I++;                        
+                I++;
             }
         }
-        
+
         if (Index > 1) {
             int Len = J3 * J3 - (J3 - 1) * (J3 - 1);
             for (int I_3 = 1; I_3 < Index; I_3++) {
@@ -881,7 +881,7 @@ std::vector<double> equivalentFeatures::ProductEncodePairwise(const std::vector<
     return pseudoInput;
 }
 
- 
+
 
 
 
@@ -890,13 +890,13 @@ std::vector<std::vector<std::complex<double>>> equivalentFeatures::SelfProductMa
     int d2 = static_cast<int>(floor(pow(V.size(), 0.5)));
     int d1 = n;
     int size_sum = 0;
-    int size_add = 0; 
+    int size_add = 0;
     int odd_sum  = 0;
 
     int J1 = d1;
     int size__ = 0;
     size_add = 0;
-    
+
     for (int J2 = max({J1 - d2 + 1, 1}); J2 <= min({d2 - 1 + J1, d2}); J2++) {
         int Begin = max({(J1 - J2 + 1), J2, (J2 - n2 + J1)});
         int End = min(J1 + J2 - 1, d2);
@@ -946,9 +946,105 @@ std::vector<std::vector<std::complex<double>>> equivalentFeatures::SelfProductMa
 }
 
 
-
-
 //std::sqrt(2 * j3 + 1)*std::pow(-1,j1 - j2 - m3)
+using namespace std;
+
+vector<vector<complex<double>>> equivalentFeatures::DerivativeSH(const vector<complex<double>>& Y) {
+    double SinTheta = sqrt(pow(Y[1].real(), 2) + pow(Y[1].imag(), 2));
+    complex<double> ExpVarphi = SinTheta != 0.0 ? Y[1] / SinTheta : complex<double>(0, 0);
+    double CotTheta = SinTheta != 0.0 ? Y[2].real() / (SinTheta * sqrt(2.0)) : 0.0;
+
+    vector<complex<double>> DerivationTheta(Y.size(), complex<double>(0, 0));
+    vector<complex<double>> DerivationVarphi(Y.size(), complex<double>(0, 0));
+
+    int N = static_cast<int>(sqrt(Y.size()));
+    int Base_ = 0;
+
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < i*2; ++j) {
+            int m = j - i;
+            DerivationTheta[Base_ + j] = m * CotTheta * Y[Base_ + j] + sqrt((i - m ) * (i+1+m)) * ExpVarphi * Y[Base_ +j+1];
+            DerivationVarphi[Base_ + j] = complex<double>(0, m) * Y[Base_ + j];
+        }
+        int j = i * 2;
+        int m = j - i;
+        DerivationTheta[Base_ + j] = m * CotTheta * Y[Base_ + j];
+        DerivationVarphi[Base_ + j] = complex<double>(0, m) * Y[Base_ + j];
+        Base_ = (i+1)*(i+1);
+    }
+
+    return {DerivationTheta, DerivationVarphi};
+}
+
+
+
+
+
+vector<vector<cdouble>> equivalentFeatures::DerivativeSH_XYZ(const vector<cdouble>& Y, const vector<cdouble>& DR, double ReciprocalRadii, double ReciprocalF) {
+
+    double SinTheta = sqrt(pow(Y[1].real(), 2) + pow(Y[1].imag(), 2));
+    cdouble ExpVarphi = SinTheta != 0.0 ? Y[1] / SinTheta : cdouble(0, 0);
+    double CotTheta = SinTheta != 0.0 ? (Y[2].real()) / (SinTheta * sqrt(2.0)) : 0.0;
+
+    double SinVarphi = SinTheta != 0.0 ? -Y[1].imag() / SinTheta : 0.0;
+    double CosVarphi = SinTheta != 0.0 ? Y[1].real() / SinTheta : 0.0;
+    double CosTheta = ReciprocalF * (Y[2].real() / (0.5 * sqrt(3.0 / M_PI)));
+
+
+
+    size_t lenY = Y.size();
+    vector<cdouble> DerivationX(lenY, cdouble(0, 0));
+    vector<cdouble> DerivationY(lenY, cdouble(0, 0));
+    vector<cdouble> DerivationZ(lenY, cdouble(0, 0));
+    vector<cdouble> DRc = DR;
+
+    SinTheta = ReciprocalF * (SinTheta / (0.5 * sqrt(3.0 / (M_PI * 2.0))));
+    double SinVarphiSlashSinTheta = SinTheta != 0.0 ? SinVarphi / SinTheta : 0.0;
+    double CosVarphiSlashSinTheta = SinTheta != 0.0 ? CosVarphi / SinTheta : 0.0;
+
+    int N = static_cast<int>(sqrt(Y.size()));
+    int Base_ = 0;
+
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < i*2; ++j) {
+
+            int m = j - i;
+            cdouble DerivationTheta  = m * CotTheta * Y[Base_ + j] + sqrt((i - m ) * (i+1+m)) * ExpVarphi * Y[Base_ +j+1];
+            cdouble DerivationVarphi = complex<double>(0, m) * Y[Base_ + j];
+
+            DerivationX[Base_ + j] = DRc[Base_ + j] * Y[Base_ + j] * SinTheta * CosVarphi + ReciprocalRadii * (CosTheta * CosVarphi * DerivationTheta - SinVarphiSlashSinTheta * DerivationVarphi);
+            DerivationY[Base_ + j] = DRc[Base_ + j] * Y[Base_ + j] * SinTheta * SinVarphi + ReciprocalRadii * (CosTheta * SinVarphi * DerivationTheta + CosVarphiSlashSinTheta * DerivationVarphi);
+            DerivationZ[Base_ + j] = DRc[Base_ + j] * Y[Base_ + j] * CosTheta + ReciprocalRadii * (-SinTheta * DerivationTheta);
+        }
+        int j = i * 2;
+        int m = j - i;
+        cdouble DerivationTheta     = m * CotTheta * Y[Base_ + j];
+        cdouble DerivationVarphi    = complex<double>(0, m) * Y[Base_ + j];
+        DerivationX[Base_ + j] = DRc[Base_ + j] * Y[Base_ + j] * SinTheta * CosVarphi + ReciprocalRadii * (CosTheta * CosVarphi * DerivationTheta - SinVarphiSlashSinTheta * DerivationVarphi);
+        DerivationY[Base_ + j] = DRc[Base_ + j] * Y[Base_ + j] * SinTheta * SinVarphi + ReciprocalRadii * (CosTheta * SinVarphi * DerivationTheta + CosVarphiSlashSinTheta * DerivationVarphi);
+        DerivationZ[Base_ + j] = DRc[Base_ + j] * Y[Base_ + j] * CosTheta + ReciprocalRadii * (-SinTheta * DerivationTheta);
+
+        Base_ = (i+1)*(i+1);
+    }
+
+    // Return concatenated matrix: each vector is a column
+    // So result is vector of vectors: rows = 3, cols = lenY
+    vector<vector<cdouble>> result(3, vector<cdouble>(lenY));
+    for (size_t i = 0; i < lenY; ++i) {
+        result[0][i] = DerivationX[i];
+        result[1][i] = DerivationY[i];
+        result[2][i] = DerivationZ[i];
+    }
+
+    return result;
+}
+
+
+
+
+
+
+
 
 
 
