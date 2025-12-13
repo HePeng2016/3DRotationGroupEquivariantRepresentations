@@ -256,8 +256,8 @@ e.g.
       y  = (y/r);
       V3 =[1,x,y,z]
       S = equivalentFeatures.CtoS_Encode(V3,2);
-      S = equivalentFeatures.IncreaseDegree(S2,1);
-      S = equivalentFeatures.IncreaseDegree(S2,1);
+      S = equivalentFeatures.IncreaseDegree(S,1);
+      S = equivalentFeatures.IncreaseDegree(S,1);
       f0 = 1;
       f1 = r;
       f2 = r*r;
