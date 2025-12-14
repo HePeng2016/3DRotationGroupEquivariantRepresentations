@@ -75,6 +75,8 @@ e.g.
 
       include("./equivalentFeatures.jl")
       using  .equivalentFeatures
+      using LinearAlgebra
+	  
       equivalentFeatures.Initial();  
       C1 =  [0.0043477849927746155,0.0,0.9999905483381614];
       R1 =  norm(C1,2);
