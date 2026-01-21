@@ -12,8 +12,9 @@ This software package is used to represent the spherical harmonic tensors in a r
      using  .equivalentFeatures 
 # Initial
      equivalentFeatures.setN(N_new);
-*N_new* is the maximum orbital quantum number *l* of the input spherical harmonic representation *Y(lm)*.   
-    If this command is missing, then the default maximum orbital quantum number *l* is 3.  
+*N_new* indicates the maximum orbital quantum number *l* of the input spherical harmonic representation *Y(lm)*, 
+
+Because in julia the index begins from 1, so we define *N_new* as *l+1*. In the following, the definition of degree n is the quantum number *l* plus one. If this command is missing, then the default maximum orbital quantum number *l* is 2, so *N_new* is 3. 
      
      equivalentFeatures.Initial();
    Once this function had been carried out, the tables for the Clebsch Gordan coefficients and the Wigner 3j coefficients were generated. And the data structures for storing the relations between coefficients and variables were generated.
