@@ -582,8 +582,8 @@ module  equivalentFeatures
                        if WignerPI[I,2] > d2 || WignerPI[I,3] > d3
                           continue;
                        end
-                       print([WignerPI[I,1],WignerPI[I,2],WignerPI[I,3]]);
-                       print("\n");
+                       #print([WignerPI[I,1],WignerPI[I,2],WignerPI[I,3]]);
+                       # print("\n");
 
                        TempI = W3JTableI[WignerPI[I,1],WignerPI[I,2],WignerPI[I,3]];
                        TempC = W3JTableC[WignerPI[I,1],WignerPI[I,2],WignerPI[I,3]];
