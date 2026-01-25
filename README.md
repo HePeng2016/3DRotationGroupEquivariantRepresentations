@@ -88,7 +88,8 @@ e.g.
       R2 =  norm(C2,2);
       C2 =  C2/R2;# Cartesian coordinate normalization.
       V2 =  vcat(1, C2);
-      #c2 is the vector obtained by rotating c1.
+      # c2 is the vector obtained by rotating c1.
+	  # V1 and V2 are two identical spherical harmonic tensors with different rotations. 
       
       S1 = equivalentFeatures.CtoS_Encode(V1,2);
       S2 = equivalentFeatures.CtoS_Encode(V2,2);    # Convert the vector to a dipole spherical harmonic tensor(*l=1*), because n indicates *l+1*, the input *n = 2*.  
@@ -110,15 +111,66 @@ e.g.
 
      
     
-V1 and V2 are two identical spherical harmonic tensors with different rotations. 
+Encode two spherical harmonic tensors that have distinct centers:  
 
      equivalentFeatures.W3jProduct(V1,V2,V3) 
+	 
+This function converts three spherical harmonic tensors into a rotation-invariant vector. These three tensors may correspond to the two spherical harmonic representations of the density or geometry of two objects with distinct centers, along with the tensor obtained from the subtraction between the coordinates of two objects.
 
-This function transforms three spherical harmonic tensors into a vector that is invariant to rotation. These three spherical harmonic tensors could be the tensors that represent the density of two nodes with different centers and the tensor that is derived from the subtraction between the coordinates of two nodes.
+     equivalentFeatures.W3jProductCToR(E1)
+	 
+This function converts the output of the complex-formatted produced by W3jProduct into a real-valued format.
 
-      equivalentFeatures.DecodeMatrix(V1,V2)
-      
-This function will return a matrix that can be used to convert the invariant coding calculated by the W3jProduct function into one of the original spherical harmonic tensors (V3). And the V1, V2 are two other original spherical harmonic tensors.
+     equivalentFeatures.W3jProduct(V1,V2,V3,n1,n2)
+	 
+This is a restricted version of Wigner 3J. Only shell with degree n1 from V1 is selected and the three shells for the 3j wigner product with degrees s1,s2,s3 satisfying s1 = n1 and s1 < abs(s2-s3)+n2.
+
+     equivalentFeatures.W3jProductCToR(InvariantV,n1,n2,d2,d3)
+
+This function converts the result of restricted version of Wigner 3J into a real-valued format. The definition of n1 and n2 is the same as W3jProduct. d2,d3 are the degree of V2,V3.  
+
+e.g.
+
+      using LinearAlgebra
+	  
+      S1=[0.28209479177387814 + 0.0im,0.32024057866853123 - 0.20790429007338984im,-0.7888471542040005 + 0.0im,-0.32024057866853123 - 0.20790429007338984im,0.1919939064150656 - 0.4309075639277064im,-1.1561083338265001 + 0.7505603549415122im,1.2590212271988541 - 0.0im,1.1561083338265001 + 0.7505603549415122im,0.1919939064150656 + 0.4309075639277064im]
+      S2=[ 0.28209479177387814 + 0.0im,-0.34356259618321017 + 0.42005430129421506im,0.48849798065320743 + 0.0im,0.34356259618321017 + 0.42005430129421506im,-0.1890184428370038 - 0.9340187976228163im,-0.7680649651957328 + 0.9390690252317576im,-0.14756946227815848 + 0.0im,0.7680649651957328 + 0.9390690252317576im,-0.1890184428370038 + 0.9340187976228163im]
+      D3 = [0.06750336452980638,0.6140480570957588,0.6147106620083631] 
+	  # S1,S2 are two spherical harmonic tensors representing two objects with distinct centers. D3 represents the arrow between two centers.
+	  
+      S1_= [0.28209479177387814 + 0.0im,-0.4591493984823001 - 0.01920376046845461im,-0.7010437701912248 + 0.0im,0.4591493984823001 - 0.01920376046845461im,0.6810233009616511 + 0.05706694248221995im,1.4730872169146216 + 0.061611349500355135im,0.7405487972724079 - 0.0im,-1.4730872169146216 + 0.061611349500355135im,0.6810233009616511 - 0.05706694248221995im]
+      S2_= [0.28209479177387814 + 0.0im,0.5926183815697879 - 0.06877358557907325im,0.3402048201752961 + 0.0im,-0.5926183815697879 - 0.06877358557907325im,1.1211813340313133 - 0.2637795299760591im,0.9226667866122251 - 0.10707582684485425im,-0.6346265484963751 + 0.0im,-0.9226667866122251 - 0.10707582684485425im,1.1211813340313133 + 0.2637795299760591im]
+      D3_= [-0.38631329442688933,-0.254642071890792,0.7385122696373354]
+      # S1_, S2_, and D_3 are the rotated versions of S1, S2, and D3, respectively.  
+
+	  R3 =  norm(D3,2);
+	  D3 = D3/R3;
+      D3 = vcat(1, D3);
+      D3 = equivalentFeatures.CtoS_Encode(D3,2);
+      D3 = equivalentFeatures.IncreaseDegree(D3,1);
+      D3[2:4] = D3[2:4]*R3; 
+      D3[5:9] = D3[5:9]*R3*R3;
+	  R3_ =  norm(D3_,2);
+	  D3_ = D3_/R3_; 
+      D3_ = vcat(1, D3_);
+      D3_ = equivalentFeatures.CtoS_Encode(D3_,2);
+      D3_ = equivalentFeatures.IncreaseDegree(D3_,1);
+      D3_[2:4] = D3_[2:4]*R3_; 
+      D3_[5:9] = D3_[5:9]*R3_*R3_;
+
+      E  = equivalentFeatures.W3jProduct(D3,S1,S2);
+	  E_ = equivalentFeatures.W3jProduct(D3_,S1_,S2_); 
+      E  = equivalentFeatures.W3jProductCToR(E);
+	  E_  = equivalentFeatures.W3jProductCToR(E_);
+	  Loss = sum(abs.(E - E_)) 
+	  E  = equivalentFeatures.W3jProduct(D3,S1,S2,2,2)
+	  E_ = equivalentFeatures.W3jProduct(D3_,S1_,S2_,2,2)
+      E  = equivalentFeatures.W3jProductCToR(E,2,2,3,3)
+	  E_  = equivalentFeatures.W3jProductCToR(E_,2,2,3,3)
+	  Loss = sum(abs.(E - E_)) 
+	  
+	  
+This function will return a matrix that can be used to convert the invariant coding calculated by the W3jProduct function into one of the original spherical harmonic tensors (V1). And the V2, V3 are two other original spherical harmonic tensors.
 
 e.g.
       using LinearAlgebra
