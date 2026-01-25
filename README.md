@@ -91,9 +91,13 @@ e.g.
       #c2 is the vector obtained by rotating c1.
       
       S1 = equivalentFeatures.CtoS_Encode(V1,2);
-      S2 = equivalentFeatures.CtoS_Encode(V2,2);
-      S1 = equivalentFeatures.IncreaseDegree(S1,1);
-      S2 = equivalentFeatures.IncreaseDegree(S2,1);
+      S2 = equivalentFeatures.CtoS_Encode(V2,2);    # Convert the vector to a dipole spherical harmonic tensor(*l=1*), because n indicates *l+1*, the input *n = 2*.  
+      S1 = equivalentFeatures.IncreaseDegree(S1,1);  
+      S2 = equivalentFeatures.IncreaseDegree(S2,1); # Increase the dipole spherical harmonic tensor into quadrupole spherical harmonic tensor. 
+	  S1[2:4] = S1[2:4]*R1; 
+	  S1[5:9] = S1[5:9]*R1*R1; 
+	  S2[2:4] = S2[2:4]*R2; 
+	  S2[5:9] = S2[5:9]*R2*R2; 
       E1 = equivalentFeatures.SelfProduct(S1); 
       E2 = equivalentFeatures.SelfProduct(S2);
       Loss = sum(abs.(E1 - E2))
