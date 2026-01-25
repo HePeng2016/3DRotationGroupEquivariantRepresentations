@@ -88,8 +88,7 @@ e.g.
       R2 =  norm(C2,2);
       C2 =  C2/R2;# Cartesian coordinate normalization.
       V2 =  vcat(1, C2);
-      
-      V2 =[1.0,0.772027518982468,0.33454525822573616,0.5404192632877276];
+      #c2 is the vector obtained by rotating c1.
       
       S1 = equivalentFeatures.CtoS_Encode(V1,2);
       S2 = equivalentFeatures.CtoS_Encode(V2,2);
