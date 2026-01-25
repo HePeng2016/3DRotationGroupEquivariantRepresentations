@@ -50,7 +50,7 @@ The output is a spherical harmonic tensor stored as a complex vector.
 
 e.g.
 
-N=2:
+N=3:
 
 *[Y(l=0,m=0),Y(l=1,m=-1),Y(l=1,m=0),Y(l=1,m=1),Y(l=2,m=-2),Y(l=2,m=-1),Y(l=2,m=0),Y(l=2,m=1),Y(l=2,m=2)]*
 
