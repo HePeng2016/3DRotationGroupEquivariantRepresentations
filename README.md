@@ -12,7 +12,7 @@ This software package is used to represent the spherical harmonic tensors in a r
      using  .equivalentFeatures 
 # Initial
      equivalentFeatures.setN(N_new);
-*N_new* indicates the maximum orbital quantum number *l* of the input spherical harmonic representation *Y(lm)*, 
+*N_new* indicates the maximum orbital quantum number *l* of the input spherical harmonic representation *Y(lm)*.
 
 Because in julia the index begins from 1, so we define *N_new* as *l+1*. In the following, the definition of degree n is the quantum number *l* plus one. If this command is missing, then the default maximum orbital quantum number *l* is 2, so *N_new* is 3. 
      
@@ -72,6 +72,8 @@ For the Clebsch–Gordan (CG) product of any two shells in the V1 spherical harm
      
 The definition of n,n2 is the same as SelfProduct function. For the rotation-invariance embedding, both norm and pairwise product are considered. 
 
+Encoding one object with the same center:
+
 e.g. 
 
       include("./equivalentFeatures.jl")
@@ -109,6 +111,28 @@ e.g.
       E2 = equivalentFeatures.SelfProductPairwise(S2,2,2);
       Loss = sum(abs.(E1 - E2)) 
 
+
+
+Encoding two objects with the same center: 
+
+
+      equivalentFeatures.ProductEncode(V1,V2)
+
+
+This function will return the invariant coding of the tensor product of two spherical harmonic tensors (V1, V2).
+
+e.g.
+
+      V1 =[1.0,0.0043477849927746155,0.0,0.9999905483381614,0.11]; 
+      V2 =[1.0,0.772027518982468,0.33454525822573616,0.5404192632877276];
+      include("./equivalentFeatures.jl")
+      using  .equivalentFeatures
+      equivalentFeatures.setN(2); 
+      equivalentFeatures.Initial();
+      S1 = equivalentFeatures.CtoS_Encode(V1);
+      S2 = equivalentFeatures.CtoS_Encode(V2);
+      equivalentFeatures.ProductEncode(S1,S2);
+S1 and S2 are two spherical harmonic tensors share the same centre.
      
     
 Encode two spherical harmonic tensors that have distinct centers:  
@@ -131,8 +155,11 @@ This function converts the result of restricted version of Wigner 3J into a real
 
 e.g.
 
-      using LinearAlgebra
+	  include("./equivalentFeatures.jl")
+      using  .equivalentFeatures
+	  using LinearAlgebra
 	  
+	  equivalentFeatures.Initial(); 
       S1=[0.28209479177387814 + 0.0im,0.32024057866853123 - 0.20790429007338984im,-0.7888471542040005 + 0.0im,-0.32024057866853123 - 0.20790429007338984im,0.1919939064150656 - 0.4309075639277064im,-1.1561083338265001 + 0.7505603549415122im,1.2590212271988541 - 0.0im,1.1561083338265001 + 0.7505603549415122im,0.1919939064150656 + 0.4309075639277064im]
       S2=[ 0.28209479177387814 + 0.0im,-0.34356259618321017 + 0.42005430129421506im,0.48849798065320743 + 0.0im,0.34356259618321017 + 0.42005430129421506im,-0.1890184428370038 - 0.9340187976228163im,-0.7680649651957328 + 0.9390690252317576im,-0.14756946227815848 + 0.0im,0.7680649651957328 + 0.9390690252317576im,-0.1890184428370038 + 0.9340187976228163im]
       D3 = [0.06750336452980638,0.6140480570957588,0.6147106620083631] 
@@ -158,19 +185,30 @@ e.g.
       D3_[2:4] = D3_[2:4]*R3_; 
       D3_[5:9] = D3_[5:9]*R3_*R3_;
 
-      E  = equivalentFeatures.W3jProduct(D3,S1,S2);
-	  E_ = equivalentFeatures.W3jProduct(D3_,S1_,S2_); 
-      E  = equivalentFeatures.W3jProductCToR(E);
+      E   = equivalentFeatures.W3jProduct(D3,S1,S2);
+	  E_  = equivalentFeatures.W3jProduct(D3_,S1_,S2_); 
+      E   = equivalentFeatures.W3jProductCToR(E);
 	  E_  = equivalentFeatures.W3jProductCToR(E_);
 	  Loss = sum(abs.(E - E_)) 
-	  E  = equivalentFeatures.W3jProduct(D3,S1,S2,2,2)
-	  E_ = equivalentFeatures.W3jProduct(D3_,S1_,S2_,2,2)
-      E  = equivalentFeatures.W3jProductCToR(E,2,2,3,3)
-	  E_  = equivalentFeatures.W3jProductCToR(E_,2,2,3,3)
+	  E    = equivalentFeatures.W3jProduct(D3,S1,S2,2,2)
+	  # The restriction is that in D3, only the shell with quantum number *l=1* (for *n1=l+1*,n1=2) is used in the Wigner 3J product.   
+	  E_   = equivalentFeatures.W3jProduct(D3_,S1_,S2_,2,2)
+      E    = equivalentFeatures.W3jProductCToR(E,2,2,3,3)
+	  E_   = equivalentFeatures.W3jProductCToR(E_,2,2,3,3)
 	  Loss = sum(abs.(E - E_)) 
-	  
-	  
-This function will return a matrix that can be used to convert the invariant coding calculated by the W3jProduct function into one of the original spherical harmonic tensors (V1). And the V2, V3 are two other original spherical harmonic tensors.
+
+
+
+
+Encoding in a rotation-equivariant manner:
+
+     equivalentFeatures.W3jProductCompact(V1,R2,R3,n1);
+     
+This function converts the spherical harmonic tensor V1 into a rotation-invariant vector using the reference spherical harmonic tensors R2 and R3, where n1 denotes the maximum degree of the shell in V1. The resulting invariance vector has the same length as V1. 
+   
+     equivalentFeatures.DecodeMatrixCompact(R2,R3,n1); 
+
+This function will return a matrix that can be used to convert the invariant coding calculated by the W3jProductCompact function into one of the original spherical harmonic tensors (V1).  Because the length of V1 is equal to invariant coding, this matrix is therefore a square matrix. And the R2, R3 are two reference spherical harmonic tensors.
 
 e.g.
       using LinearAlgebra
@@ -200,41 +238,23 @@ e.g.
       V1 = equivalentFeatures.IncreaseDegree(V1,1);
       V2 = equivalentFeatures.IncreaseDegree(V2,1);
       V3 = equivalentFeatures.IncreaseDegree(V3,1);  
-       
-       W3 = equivalentFeatures.W3jProduct(V1,V2,V3)
-       M  = equivalentFeatures.DecodeMatrix(V2,V3) 
-       norm(M*W3-V1,2)
+      # V1 is the spherical harmonic tensor to be encoded. V2,V3 are two reference spherical harmonic tensors.   
+	  
+      W3 = equivalentFeatures.W3jProductCompact(V1,V2,V3,3)
+	  # W3 is the invariant encoding derived from the W3j product of these three tensors.
+      M  = equivalentFeatures.DecodeMatrixCompact(V2,V3,3) 
+	  # M is the matrix that converts the invariant coding (W3) into the original spherical harmonic tensor (V1),the length of V1 is equal to the length of W3, therefore M is a square matrix. 
+      norm(M*W3-V1,2);
 
- V1, V2, V3 are three original spherical harmonic tensors.
- W3 is the invariant encoding derived from the W3j product of these three tensors. 
- M is the matrix that converts the invariant coding (W3) into the original spherical harmonic tensor (V3).
+
+  
  
+References spherical harmonic tensors extraction:
  
-      equivalentFeatures.W3jProduct(V1,V2,V3,n1,n2); 
-       
-This function transforms three spherical harmonic tensors into a vector that is invariant to rotation, only shell n1 for V1 is selected, and for three shells wigner production from V1,V2,V3 with degrees s1,s2,s3 satisfied that s1 = n1, and s1 < abs(s2-s3)+n2.
-
-     equivalentFeatures.W3jProductCompact(V1,V2,V3,n1)； 
-     
-This function transforms three spherical harmonic tensors into a vector that is invariant to rotation，n1 is the maximum degree of V1. this function will give invariance vector with the same length of V3. 
-   
-     equivalentFeatures.DecodeMatrixCompact(V1,V2,V3,n1); 
-
-This function will return a matrix that can be used to convert the invariant coding calculated by the W3jProductCompact function into one of the original spherical harmonic tensors (V1).  Because the length of V ,therefore this matrix is a square matrix.
-
-
- e.g.
-
- 
-      W3 = equivalentFeatures.W3jProductCompact(V1,V2,V3)
-      M  = equivalentFeatures.DecodeMatrixCompact(V2,V3) 
-      norm(M*W3-V1_,2);
-
-The length of V1 is equal to the length of W3, therefore M is a square matrix. V2,V3 are two reference vectors. 
 
       equivalentFeatures.ReferencesExtract(V_input)
       
-This function will yield two reference vectors from the diople and quadruple shells of V_input. 
+This function will yield two reference vectors from the diople and quadruple shells of V_input. And these two reference vectors are ​converted into spherical harmonic tensors via *CtoS_Encode* and *IncreaseDegree* functions. 
 
     
       equivalentFeatures.SelfProductMatrix( V_input, int n, int n2);  
@@ -242,11 +262,13 @@ This function will yield two reference vectors from the diople and quadruple she
       
 For the Clebsch–Gordan (CG) product of any two shells in the V_input spherical harmonic tensor, only top n2  with smaller degree are selected. The spherial harmonic tensors with degree n are returned.
 
+ReferencesExtract,SelfProductMatrix can be used to generate the reference vectors for W3jProductCompact and DecodeMatrixCompact functions. 
+
 e.g 
 
      V_input = [ 0.8462843753216345 + 0.0im, 0.49442005281239043 - 0.38003620975475416im,1.1266402071841877 + 0.0im,-0.49442005281239043 - 0.38003620975475416im,0.12624905371373815 - 0.586665146512387im,0.712812513540789 - 0.5922990542960181im,0.8306662145480092 + 0.0im,-0.712812513540789 - 0.5922990542960181im,0.12624905371373815 + 0.586665146512387im ]
     V_output = [ 0.5641895835477564 + 0.0im,0.046180362258809796-0.5151788499369871im,0.563454914288809,-0.046180362258809796-0.5151788499369871im,-0.35831018662719905 -0.036901839488305416im,0.09441424373213234-0.6546737533363572im,0.008536735434823653+0.0im,-0.09441424373213234-0.6546737533363572im,-0.35831018662719905+0.036901839488305416im]
-      
+    
       
       MM =  equivalentFeatures.ReferencesExtract(V_input)
       v1 = vcat(1,MM[:,1]);
@@ -255,9 +277,10 @@ e.g
       v1 = equivalentFeatures.RStoCS_Encode(v1,2);
       v1 = equivalentFeatures.IncreaseDegree(v1,1);
       v2 = equivalentFeatures.IncreaseDegree(v2,1);
+	  # Extract two reference spherical harmonic tensors from the V_input spherical harmonic tensor. 
       V_Encode = equivalentFeatures.W3jProductCompact(V_output,v1,v2,3);
       M = equivalentFeatures.DecodeMatrixCompact(v1,v2,3);
-      norm(M*V_Encode - V_output,2);
+      norm(M*V_Encode - V_output,2)
       
       
       MM=equivalentFeatures.SelfProductMatrix(V_input,2,2)
@@ -272,28 +295,12 @@ e.g
       v1 = equivalentFeatures.IncreaseDegree(v1,1);
       v2 = equivalentFeatures.IncreaseDegree(v2,1);
       V_Encode = equivalentFeatures.W3jProductCompact(V_output,v1,v2,3);
-      M = equivalentFeatures.DecodeMatrixCompact(v1,v2,3);
+      M = equivalentFeatures.DecodeMatrixCompact(v1,v2,3)
       norm(M*V_Encode - V_output,2);
 
-ReferencesExtract,SelfProductMatrix can be used to generate the reference vectors for W3jProductCompact and DecodeMatrixCompact functions. 
-
-      equivalentFeatures.ProductEncode(V1,V2)
 
 
-This function will return the invariant coding of the tensor product of two spherical harmonic tensors (V1, V2).
-
-e.g.
-
-      V1 =[1.0,0.0043477849927746155,0.0,0.9999905483381614,0.11]; 
-      V2 =[1.0,0.772027518982468,0.33454525822573616,0.5404192632877276];
-      include("./equivalentFeatures.jl")
-      using  .equivalentFeatures
-      equivalentFeatures.setN(2); 
-      equivalentFeatures.Initial();
-      S1 = equivalentFeatures.CtoS_Encode(V1);
-      S2 = equivalentFeatures.CtoS_Encode(V2);
-      equivalentFeatures.ProductEncode(S1,S2);
-S1 and S2 are two spherical harmonic tensors share the same centre.
+Derivatives of spherical harmonics: 
 
        equivalentFeatures.DerivativeSH(Y)
 
@@ -363,6 +370,7 @@ The DerivativeSH function returns a matrix with two columns. One column indicate
 RStoCS_Encode will convert a real spherical harmonic tensor into a complex spherical harmonic tensor, CStoRS_Encode will convert a complex spherical harmonic tensor back to a real spherical harmonic tensor. 
     std::vector<std::complex<double>> IncreaseDegree(const std::vector<std::complex<double>>& V, int n);
 IncreaseDegree function can increase the degree of spherical harmonic tensor by n. 
+
 e.g.
 
     std::vector<double> V1 = { 1.0,0.2820947917738782,0.1558348923076441,-0.41829957442835725};
@@ -379,6 +387,7 @@ V1 is a real spherical harmonic tensor to be converted as a complex spherical ha
    
  V is a spherical harmonic tensor to be encoded. 
  Two shells of V will be  Clebsch–Gordan (CG)  producted to generate a set of spherical harmonic tensors, the maximum degree of spherical harmonic tensors in this set is n, and the maximum size of the set is n2. For this set derived from the shells (CG) production of V, the norm of each spherical harmonic tensor and the product of two spherical harmonic tensors are caculated as return. 
+ 
 e.g. 
 
 
@@ -418,7 +427,7 @@ e.g.
         norm += std::abs(N1[i] - N2[i]);
     }
     
-V is a spherical harmonic vector,  V_R is a rotated spherical harmonic vector for the V spherical harmonic vector. For SelfProduct, SelfProductPairwise functions, V and V_R will yield the same result. 
+V is a spherical harmonic vector,  V_R is a rotated spherical harmonic vector for the V spherical harmonic vector. For SelfProduct, SelfProductPairwise functions, V and V_R will yield the same results. 
  
     std::vector<std::complex<double>> W3jProduct(const std::vector<std::complex<double>>& V1, const std::vector<std::complex<double>>& V2,const std::vector<std::complex<double>>& V3,int n1, int n2); 
    
@@ -439,6 +448,7 @@ The definition of n1,n2,d2,d3 is the same of W3jProductCToR, the input is a real
      Eigen::MatrixXcd DecodeMatrixCompact(const std::vector<std::complex<double>>& V2, const std::vector<std::complex<double>>& V3, int n);
 
 The spherical harmonic tensors V2 and V3 have the same reference coordinate as V1 the input of W3jProductCompact. This function will return a matrix M. This matrix will recover an invariance vector yielded by W3jProductCompact into an spherical harmonic tensor that share the same reference coordinate as V2, V3, the orientation of this spherical harmonic tensor is provide by V2, V3.  
+
 e.g.
 
        equivalentFeatures Test;
@@ -593,6 +603,7 @@ e.g.
 Reference vectors are extracted from input spherical harmonic tensors (V_input) via the ReferencesExtract or SelfProductMatrix function. The spherical harmonic tensor (V_output) is converted into a rotation-invariant vector, which is insensitive to the rotation of (V_input) and (V_output), using the W3jProductCompact function and the reference vectors. This rotation-invariant vector is then recovered as a spherical harmonic tensor with coordinate information using an auxiliary matrix generated by the DecodeMatrixCompact function and the reference vectors.
 
      std::vector<double> ProductEncode(const std::vector<std::complex<double>>& V1, const std::vector<std::complex<double>>& V2, int n);
+	 
  V1 and V2 are spherical harmonic tensors to be encoded, one shell of V1 and one shell of V2 will be Clebsch–Gordan (CG) products to generate a set of spherical harmonic tensors, the maximum size of each set is n, the output is a list of the norms of each spherical harmonic tensor from these sets.    
  
     std::vector<double> ProductEncodePairwise(const std::vector<std::complex<double>>& V1, const std::vector<std::complex<double>>& V2, int n);
