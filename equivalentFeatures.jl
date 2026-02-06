@@ -1578,8 +1578,8 @@ function DecodeMatrixCompact(V2,V3,n)
                   end 
 
                   size__ = size__ + 1;
-                  print( [J1,J2,J3]); 
-                  print("\n");
+                 # print( [J1,J2,J3]); 
+                 # print("\n");
                 end
               end 
               if ( Max_size <  size__ ) 
@@ -1652,19 +1652,19 @@ function DecodeMatrixCompact(V2,V3,n)
                                end 
                                size_sum = size_sum+1; 
                             end 
-                               print(Self_Product); 
-                               print("  ");
-                               print(I_2);
-                               print("  ");
-                               print(I_3);
-                               print("\n");
+                               #print(Self_Product); 
+                               #print("  ");
+                               #print(I_2);
+                               #print("  ");
+                               #print(I_3);
+                               #print("\n");
                                    
                           end 
                          else 
                                Self_Product = LTm[I_3,1:Len]'*LTm[I_3,1:Len];  
                                pseudoInput[size_sum] = real(Self_Product);
                                size_sum = size_sum+1;
-                               print("\n");
+                               #print("\n");
                          end 
                       end 
                 end 
