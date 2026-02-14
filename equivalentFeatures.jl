@@ -1352,6 +1352,55 @@ gamma    =  a11*a22*a33 +2*a12*a23*a13-a11*a23*a23-a12*a12*a33-a13*a13*a22;
 	          return  hcat(DerivationTheta,DerivationVarphi); 
        end
 
+     # Derivative of bulk level Spherical Harmonic with Respect to $\theta$ and $\phi$ via WignerD 
+
+       function DerivativeWignerD(Y)
+
+           L_max = isqrt(length(Y));
+           DerivationTheta   = Vector{Complex}(undef,length(Y)); 
+           DerivationVarphi  = Vector{Complex}(undef,length(Y));
+           DerivationTheta[1]  = 0;
+           DerivationVarphi[1] = 0;
+	
+			  for L = 2:L_max
+			      
+			      l = (L-1);
+			      Base_ = (L-1)*(L-1);
+			      Size  = L*L - Base_;
+			      m = -l 
+			      for I in 1:Size 
+			          DerivationVarphi[Base_+I] = -im*m*Y[Base_+I];
+			          m = m+1;   
+			      end 
+		
+			      for I in 1:Size 
+			       
+			          if (I==1) 
+			            m = -l+1; 
+			            DerivationTheta[Base_+I] = 0.5*((l+m)*(l-m+1))^0.5*Y[Base_+2];
+			            continue;
+			          end 
+			
+			          if (I>1)&&(I<Size)
+			            m_d = -l + (I-1)-1;
+			            m_u = -l + (I+1)-1;
+			            DerivationTheta[Base_+I] = 0.5*((l+m_u)*(l-m_u+1))^0.5*Y[Base_+I+1] - 0.5*((l-m_d)*(l+m_d+1))^0.5*Y[Base_+I-1];
+			          end
+			
+			          if (I==Size) 
+			            m = l-1;
+			            DerivationTheta[Base_+I] = -0.5*((l-m)*(l+m+1))^0.5*Y[Base_+I-1];
+			          end 
+			      end 
+			  end 
+
+     return  hcat(DerivationTheta,DerivationVarphi); 
+end 
+
+
+
+
+
         # Derivative of Spherical Harmonic with Respect to Cartesian coordinates, DR is (df(r)/dr)/f(r), ReciprocalRadii is 1/r, ReciprocalF is 1/f(r); 
 
          function  DerivativeSH_XYZ(Y,DR,ReciprocalRadii,ReciprocalF)
@@ -1506,8 +1555,8 @@ function DecodeMatrixCompact(V2,V3,n)
                       continue; 
                   end 
                   LENGTH = LENGTH+1;
-                  print( [J1,J2,J3]); 
-                  print("\n");
+                 # print( [J1,J2,J3]); 
+                 # print("\n");
                 end
               end 
             end  
