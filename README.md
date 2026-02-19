@@ -343,6 +343,62 @@ e.g.
       equivalentFeatures.DerivativeSH(Y,DR,ReciprocalRadii,ReciprocalF)
 The DerivativeSH function returns a matrix with two columns. One column indicates the θ and the other indicates the φ.  DerivativeSH_XYZ returns a three-column matrix indicating X, Y, and Z, respectively. 
 
+       equivalentFeatures.DerivativeWignerD(Y)
+
+This function will return the derivative of a bulk level Spherical Harmonic tensors with respect to $\theta$ and $\phi$ using wigner D matrix.
+
+e.g.
+
+      include("equivalentFeatures.jl")
+      using  .equivalentFeatures
+      using   WignerD 
+      using   LinearAlgebra
+
+
+      equivalentFeatures.Initial();
+      C1 =  [0.0043477849927746155,0.0,0.9999905483381614]; 
+      C2 =  [0.772027518982468,0.33454525822573616,0.5404192632877276];
+      C3 =  [0.0043477849927746155,0.9999905483381614,0.11];
+
+
+       R  =  norm(C1,2);
+       C1_ = C1/R; 
+       V1 =  vcat(1, C1_);
+       S1 = equivalentFeatures.CtoS_Encode(V1,2);
+       S1 = equivalentFeatures.IncreaseDegree(S1,1);
+       S1[2:4] = S1[2:4]*R; 
+       S1[5:9] = S1[5:9]*R*R; 
+       Idential = S1; 
+
+       R  =  norm(C2,2);
+       C2_ = C2/R; 
+       V1 =  vcat(1, C2_);
+       S1 = equivalentFeatures.CtoS_Encode(V1,2);
+       S1 = equivalentFeatures.IncreaseDegree(S1,1);
+       S1[2:4] = S1[2:4]*R; 
+       S1[5:9] = S1[5:9]*R*R; 
+       Idential = Idential+S1; 
+	   
+       R  =  norm(C3,2);
+       C3_ = C3/R; 
+       V1 =  vcat(1, C3_);
+       S1 = equivalentFeatures.CtoS_Encode(V1,2);
+       S1 = equivalentFeatures.IncreaseDegree(S1,1);
+       S1[2:4] = S1[2:4]*R; 
+       S1[5:9] = S1[5:9]*R*R; 
+       Idential = Idential+S1; 
+
+       Deriva = equivalentFeatures.DerivativeWignerD(Idential);
+
+       sum(abs.(Deriva[2:4,1] - ((wignerD(1,0,0.0001,0) - wignerD(1,0,0,0))/0.0001)*Idential[2:4]))
+       sum(abs.(Deriva[5:9,1] - ((wignerD(2,0,0.0001,0) - wignerD(2,0,0,0))/0.0001)*Idential[5:9]))
+
+       sum(abs.(Deriva[2:4,2] - ((wignerD(1,0.0001,0,0) - wignerD(1,0,0,0))/0.0001)*Idential[2:4])) 
+       sum(abs.(Deriva[5:9,2] - ((wignerD(2,0.00001,0,0) - wignerD(2,0,0,0))/0.00001)*Idential[5:9]))
+
+
+	  
+
 # Installation (c++)
 
 
