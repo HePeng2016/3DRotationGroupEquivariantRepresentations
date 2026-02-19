@@ -8,6 +8,8 @@
 
 This software package is used to represent the spherical harmonic tensors in a rotation equivariance or invariance way. The key functions are implemented in two different versions. One version uses Julia,the other version uses C++, they yield the same result. 
 # Installation (julia)
+This version of the Julia package is not registered. Its dependent packages (`SphericalHarmonicExpansions,WignerSymbols,DataStructures,MultivariatePolynomials,LinearAlgebra,SphericalHarmonics`) must be manually installed using the Pkg package manager (`using  Pkg,Pkg.add("SphericalHarmonics")... ...`) After installing all dependencies, download the `equivalentFeatures.jl` file to your working directory. Then, you can use the following commands to load the *equivalentFeatures* package.
+
      include("./equivalentFeatures.jl")
      using  .equivalentFeatures 
 # Initial
