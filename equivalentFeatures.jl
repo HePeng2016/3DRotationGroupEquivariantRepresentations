@@ -1722,6 +1722,33 @@ function DecodeMatrixCompact(V2,V3,n)
             return pseudoInput;
           end
 
+     # Find the rotation matrix for transferring one vector to another vector
+     #v_t = v_t/norm(v_t);
+     #v_f = v_f/norm(v_f);
+     # Two vectors should be normalized  
+     #Rodrigues' rotation formula
+     function RotationMatrixExtraction(v_f,v_t)
+
+	      k   = [v_f[2]*v_t[3] - v_f[3]*v_t[2], v_f[3]*v_t[1] - v_f[1]*v_t[3],v_f[1]*v_t[2] - v_f[2]*v_t[1]];
+	      Sin = norm(k);
+	      k   = k/Sin;
+	      R   = Matrix{Float64}(undef,3,3);
+	      Cos = v_f'*v_t; 
+	      One_minus_Cos = 1-Cos;  
+	      R[1,1] = Cos + One_minus_Cos*k[1]*k[1];
+	      R[1,2] = -Sin*k[3]+One_minus_Cos*k[1]*k[2];
+	      R[1,3] = Sin*k[2]+One_minus_Cos*k[1]*k[3];
+	      R[2,1] = Sin*k[3] +One_minus_Cos*k[1]*k[2];
+	      R[2,2] = Cos+One_minus_Cos*k[2]*k[2];
+	      R[2,3] = -Sin*k[1]+One_minus_Cos*k[2]*k[3];
+	      R[3,1] = -Sin*k[2]+One_minus_Cos*k[1]*k[3];
+	      R[3,2] = Sin*k[1]+One_minus_Cos*k[2]*k[3]; 
+	      R[3,3] = Cos + One_minus_Cos*k[3]*k[3]; 
+          return R; 
+     end 
+
+
+
 
 
 
