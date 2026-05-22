@@ -151,7 +151,12 @@ public:
     //   R_align = R_n^{-1}.
     //
     // Therefore,
-    //   D_align = D(phi, theta, 0)^dagger.
+    //   D_align = D(phi, theta, 0)^dagger. 
+    // Active rotation that rotates the object so that direction n aligns with z-axis.
+    // R_n = Rz(phi) Ry(theta) maps z -> n
+    // Therefore the alignment rotation is R_align = R_n^{-1}
+    // The corresponding Wigner D matrix is D(R_align) = D(phi, theta, 0)^dagger
+
     MatrixC alignment_D(int l, double x, double y, double z) const {
         check_l(l);
 
