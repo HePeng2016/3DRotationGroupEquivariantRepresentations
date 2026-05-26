@@ -395,7 +395,9 @@ e.g.
 
        sum(abs.(Deriva[2:4,2] - ((wignerD(1,0.0001,0,0) - wignerD(1,0,0,0))/0.0001)*Idential[2:4])) 
        sum(abs.(Deriva[5:9,2] - ((wignerD(2,0.00001,0,0) - wignerD(2,0,0,0))/0.00001)*Idential[5:9]))
-
+	   
+   For free coarse-grained particles without intrinsic orientation, rotational derivatives can be computed directly in the global frame using the spherical harmonic derivative operator. 
+   For structured or functional group particles with a defined local coordinate frame, rotational derivatives are first computed in the local frame, where the generator takes a simple form. The resulting derivative is then mapped back to the global frame via the inverse Wigner $D$ transformation. This approach avoids explicit construction of rotated generators and provides an efficient and physically consistent implementation.
 
 	  
 
