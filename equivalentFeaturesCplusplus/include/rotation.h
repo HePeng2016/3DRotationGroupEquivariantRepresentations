@@ -51,7 +51,8 @@ class equivalentFeatures
     std::vector<std::vector<std::complex<double>>> SelfProductMatrix(const std::vector<std::complex<double>>& V, int n, int n2);
     std::vector<std::vector<std::complex<double>>> DerivativeSH(const std::vector<std::complex<double>>& Y);
     std::vector<std::vector<std::complex<double>>> DerivativeSH_XYZ(const std::vector<std::complex<double>>& Y, const std::vector<std::complex<double>>& DR, double ReciprocalRadii, double ReciprocalF);
-};
+    std::vector<std::vector<std::complex<double>>> DerivativeWignerD(const std::vector<std::complex<double>>& Y);
+};  
 
 
 
