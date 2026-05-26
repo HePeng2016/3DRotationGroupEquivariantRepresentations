@@ -1040,6 +1040,51 @@ vector<vector<cdouble>> equivalentFeatures::DerivativeSH_XYZ(const vector<cdoubl
 }
 
 
+vector<vector<complex<double>>>   equivalentFeatures::DerivativeWignerD(const vector<complex<double>>& Y) {
+    int L_max = static_cast<int>(sqrt(Y.size()));
+    vector<complex<double>> DerivationTheta(Y.size());
+    vector<complex<double>> DerivationVarphi(Y.size());
+
+    DerivationTheta[0] = complex<double>(0, 0);
+    DerivationVarphi[0] = complex<double>(0, 0);
+
+    for (int L = 2; L <= L_max; ++L) {
+        int l = L - 1;
+        int Base_ = (L-1)*(L-1);
+        int Size = L * L - Base_;
+        int m = -l;
+
+        for (int I = 0; I < Size; ++I) {
+            DerivationVarphi[Base_ + I ] = complex<double>(0, -m) * Y[Base_ + I ];
+            ++m;
+        }
+
+        for (int I = 0; I < Size; ++I) {
+            if (I == 0) {
+                m = -l+1;
+                DerivationTheta[Base_ + I] = 0.5 * sqrt((l + m) * (l - m + 1)) * Y[Base_ + 1];
+                continue;
+            }
+
+            if (I > 0 && I < (Size-1)) {
+                int m_d = -l + (I - 1) ;
+                int m_u = -l + (I + 1) ;
+                DerivationTheta[Base_ + I] = 0.5 * sqrt((l + m_u) * (l - m_u + 1)) * Y[Base_ + I + 1]
+                                               - 0.5 * sqrt((l - m_d) * (l + m_d + 1)) * Y[Base_ + I - 1];
+            }
+
+            if (I == (Size - 1)) {
+                m = l - 1;
+                DerivationTheta[Base_ + I] = -0.5 * sqrt((l - m) * (l + m + 1)) * Y[Base_ + I - 1];
+            }
+        }
+    }
+
+    return {DerivationTheta, DerivationVarphi};
+}
+
+
+
 
 
 
