@@ -1085,6 +1085,51 @@ vector<vector<complex<double>>>   equivalentFeatures::DerivativeWignerD(const ve
 
 
 
+vector<complex<double>> equivalentFeatures::Derivative_direction(
+    const vector<complex<double>>& Y,
+    int L_max,
+    double nx, double ny, double nz)
+{
+    vector<complex<double>> out(Y.size(), {0,0});
+    std::complex<double> im(0.0, 1.0);
+
+    for (int L = 2; L <= L_max; ++L) {
+        int l = L - 1;
+        int base = (L-1)*(L-1);
+        int size = 2*l + 1;
+
+        for (int i = 0; i < size; ++i) {
+            int idx = base + i;
+            int m = -l + i;
+
+            complex<double> val = 0.0;
+
+            // --- Jz ---
+            val += nz * m * Y[idx];
+
+            // --- Jx + Jy combined ---
+            // upward (m+1)
+            if (i < size - 1) {
+                double coef = sqrt((l - m)*(l + m + 1));
+                complex<double> term = Y[idx + 1];
+
+                val += 0.5 * coef * (nx + complex<double>(0,1)*ny) * term;
+            }
+
+            // downward (m-1)
+            if (i > 0) {
+                double coef = sqrt((l + m)*(l - m + 1));
+                complex<double> term = Y[idx - 1];
+
+                val += 0.5 * coef * (nx - complex<double>(0,1)*ny) * term;
+            }
+
+            out[idx] = -im*val;
+        }
+    }
+
+    return out;
+}
 
 
 
