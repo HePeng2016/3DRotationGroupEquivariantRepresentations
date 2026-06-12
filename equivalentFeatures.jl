@@ -1443,7 +1443,66 @@ end
           return  hcat(DerivationX,DerivationY,DerivationZ); 
        end
 
+   # Derivative of bulk level Spherical Harmonic with Respect to a rotation axis  
 
+     function Derivative_direction(Y, L_max::Int,
+                                       nx::Float64, ny::Float64, nz::Float64)
+
+      
+           out = fill(0.0 + 0.0im, length(Y))
+
+           for L in 2:L_max
+               l = L - 1
+               base = (L - 1)^2
+               size = 2*l + 1
+
+               for i in 0:(size - 1)
+                   idx = base + i + 1
+                   m = -l + i
+
+                   val = 0.0 + 0.0im
+
+                   # Jz contribution: m * Y_m
+                   val += nz * m * Y[idx]
+
+                   # Contribution from Y_{m-1}
+                   if i > 0
+                       coef_down = sqrt((l + m) * (l - m + 1))
+                       val += 0.5 * coef_down * (nx - im * ny) * Y[idx - 1]
+                   end
+
+                   # Contribution from Y_{m+1}
+                   if i < size - 1
+                       coef_up = sqrt((l - m) * (l + m + 1))
+                       val += 0.5 * coef_up * (nx + im * ny) * Y[idx + 1]
+                   end
+
+                   # Convert generator action J to geometric derivative ∇
+                   out[idx] = -im * val
+               end
+           end
+
+           return out
+       end
+
+ function rotation_matrix(theta::Float64, phi::Float64)
+    # Rz(-phi)
+    Rz = [
+        cos(phi)   sin(phi)   0.0;
+       -sin(phi)   cos(phi)   0.0;
+        0.0        0.0        1.0
+    ]
+
+    # Ry(-theta)
+    Ry = [
+        cos(theta)   0.0   -sin(theta);
+        0.0          1.0    0.0;
+        sin(theta)   0.0    cos(theta)
+    ]
+
+    # R = Ry(-θ) * Rz(-φ)
+    return Ry * Rz
+ end
 
 
          function DecodeMatrix(V2,V3,n)
