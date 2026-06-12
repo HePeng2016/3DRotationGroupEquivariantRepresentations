@@ -52,6 +52,7 @@ class equivalentFeatures
     std::vector<std::vector<std::complex<double>>> DerivativeSH(const std::vector<std::complex<double>>& Y);
     std::vector<std::vector<std::complex<double>>> DerivativeSH_XYZ(const std::vector<std::complex<double>>& Y, const std::vector<std::complex<double>>& DR, double ReciprocalRadii, double ReciprocalF);
     std::vector<std::vector<std::complex<double>>> DerivativeWignerD(const std::vector<std::complex<double>>& Y);
+    std::vector<std::complex<double>> Derivative_direction( const std::vector<std::complex<double>>& Y,int L_max,double nx, double ny, double nz);
 };  
 
 
