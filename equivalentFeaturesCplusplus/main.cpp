@@ -44,7 +44,7 @@ int main()
       double ReciprocalF     = 0.8164965809277261;
       std::vector<std::vector<std::complex<double>>> Result  = Test.DerivativeSH(S2);
       std::vector<std::vector<std::complex<double>>> Result2 = Test.DerivativeSH_XYZ(S2,D,ReciprocalRadii,ReciprocalF);
-
+      std::vector<std::complex<double>> Result4 = Test.Derivative_direction(S2,3,0.40347005644828676, -0.8221653980455655, 0.40156689580466276);
 //    TT = Test.SelfProduct(V_3,2,2);
 //    std::cout << Test.RStoCS_Encode(V3,3) << std::endl;
     printf("Test");
