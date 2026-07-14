@@ -310,7 +310,7 @@ This function will return the derivative of a Spherical Harmonic tensor with res
 
       equivalentFeatures.DerivativeSH_XYZ(Y,DR,ReciprocalRadii,ReciprocalF)
       
-This function returns the derivative of a spherical harmonic tensor with respect to Cartesian coordinates. DR is a vector whose elements are fractions of the derivative of radius function and radius function((df(r)/dr)/f(r)). ReciprocalRadii is the reciprocal of the radius in Cartesian coordinates (1/r), ReciprocalF is the reciprocal of the radius function. 
+This function returns the derivative of a spherical harmonic tensor with respect to Cartesian coordinates. DR is a vector whose elements are fractions of the derivative of radius function and radius function((df(r)/dr)/f(r)). ReciprocalRadii is the reciprocal of the radius in Cartesian coordinates (1/r), ReciprocalF is the reciprocal of the radius function(l=1). 
 
 e.g.
 
@@ -334,13 +334,18 @@ e.g.
       S[5:9]   = S[5:9]*f2; 
       S[10:16] = S[10:16]*f3; 
       equivalentFeatures.DerivativeSH(S);
-      DR = zeros(16);
+      DR       = zeros(16);
       DR[2:4] .= 1.0;  #f1'
       DR[5:9] .= 2*r;  #f2'
       DR[10:16] .= 3*r*r; #f3'
+
+      DR[2:4] = DR[2:4]./r;
+      DR[5:9] = DR[5:9]./(r*r);
+	  DR[10:16] = DR[10:16]./(r*r*r);
+	  
       ReciprocalRadii = 1/r; 
       ReciprocalF     = 1/f1;
-      equivalentFeatures.DerivativeSH(Y,DR,ReciprocalRadii,ReciprocalF)
+      equivalentFeatures.DerivativeSH_XYZ(Y,DR,ReciprocalRadii,ReciprocalF)
 The DerivativeSH function returns a matrix with two columns. One column indicates the θ and the other indicates the φ.  DerivativeSH_XYZ returns a three-column matrix indicating X, Y, and Z, respectively. 
 
        equivalentFeatures.DerivativeWignerD(Y)
