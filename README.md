@@ -345,7 +345,7 @@ e.g.
 	  
       ReciprocalRadii = 1/r; 
       ReciprocalF     = 1/f1;
-      equivalentFeatures.DerivativeSH_XYZ(Y,DR,ReciprocalRadii,ReciprocalF)
+      equivalentFeatures.DerivativeSH_XYZ(S,DR,ReciprocalRadii,ReciprocalF)
 The DerivativeSH function returns a matrix with two columns. One column indicates the θ and the other indicates the φ.  DerivativeSH_XYZ returns a three-column matrix indicating X, Y, and Z, respectively. 
 
        equivalentFeatures.DerivativeWignerD(Y)
