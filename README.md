@@ -334,10 +334,10 @@ e.g.
       S[5:9]   = S[5:9]*f2; 
       S[10:16] = S[10:16]*f3; 
       equivalentFeatures.DerivativeSH(S);
-      D = zeros(16);
-      D[2:4] .= 1.0;  #f1'
-      D[5:9] .= 2*r;  #f2'
-      D[10:16] .= 3*r*r; #f3'
+      DR = zeros(16);
+      DR[2:4] .= 1.0;  #f1'
+      DR[5:9] .= 2*r;  #f2'
+      DR[10:16] .= 3*r*r; #f3'
       ReciprocalRadii = 1/r; 
       ReciprocalF     = 1/f1;
       equivalentFeatures.DerivativeSH(Y,DR,ReciprocalRadii,ReciprocalF)
