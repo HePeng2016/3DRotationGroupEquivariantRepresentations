@@ -339,7 +339,7 @@ module  equivalentFeatures
                                  End   = min(J1+J2-1,d2);
                    
                                  for I in Begin:End
-                                      if ((I == J2)&&((J1%2)==0))
+                                      if ((I+J2+J1+abs(I-J2)-3)%2 == 1) # ((I == J2)&&((J1%2)==0))   
                                           continue;
                                       end 
                                       size__ = size__ + 1;
@@ -365,7 +365,7 @@ module  equivalentFeatures
                                   #print("\n");
                                    TempI = CGTableI[J2,I,J];
                                    TempC = CGTableC[J2,I,J];
-                                   if (((I == J2)&&((J%2)==0)))
+                                   if ((I+J2+J1+abs(I-J2)-3)%2 == 1) #(((I == J2)&&((J%2)==0)))
                                         continue;
                                    end 
 
@@ -1052,7 +1052,7 @@ module  equivalentFeatures
                   for I in Begin:End
                    #   print( [J1,J2,I]);
                    #   print("\n");
-                      if ((I == J2)&&((J1%2)==0))
+                      if ((I+J2+J1+abs(I-J2)-3)%2 == 1)  #((I == J2)&&((J1%2)==0))
                           continue;
                       end 
                       size__ = size__ + 1;
@@ -1088,7 +1088,7 @@ module  equivalentFeatures
                        j3  = I -1;
                        J   = j1 -(I-J2)+1;
 
-                      if (((I == J2)&&((J%2)==0)))
+                      if ((I+J2+J1+abs(I-J2)-3)%2 == 1)     #((I == J2)&&((J1%2)==0))
                          continue;
                       end 
 
@@ -1167,7 +1167,7 @@ module  equivalentFeatures
                   for I in Begin:End
                    #   print( [J1,J2,I]);
                    #   print("\n");
-                      if ((I == J2)&&((J1%2)==0))
+                      if  ((I+J2+J1+abs(I-J2)-3)%2 == 1)   #((I == J2)&&((J1%2)==0))  
                           continue;
                       end 
                       size__ = size__ + 1;
@@ -1190,7 +1190,7 @@ module  equivalentFeatures
                        j3  = I -1;
                        J   = j1+1;
 
-                      if (((I == J2)&&((J%2)==0)))
+                      if  ((I+J2+J1+abs(I-J2)-3)%2 == 1)  #(((I == J2)&&((J%2)==0)))
                          continue;
                       end 
 
