@@ -424,7 +424,7 @@ std::vector<double> equivalentFeatures::SelfProduct(const std::vector<std::compl
 
             for (int I = Begin; I <= End; I += 1) {
 
-                if (((I == J2)&&((J1%2)==0)))
+                if ((I+J2+J1-3)%2 == 1)  //(((I == J2)&&((J1%2)==0))) // parity selection rule
                     continue;
                 size__++;
             }
@@ -447,8 +447,8 @@ std::vector<double> equivalentFeatures::SelfProduct(const std::vector<std::compl
                 int j3 = I - 1;
                 int J = j1 - (I - J2) + 1;
 
-                if (((I == J2)&&((J%2)==0)))
-                    continue;
+                if ((I+J2+J1-3)%2 == 1) 
+                    continue;// parity selection rule
 
                 auto TempI = CGTableI[J2-1][I-1][J-1];
                 auto TempC = CGTableC[J2-1][I-1][J-1];
@@ -612,7 +612,7 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
 
             for (int I = Begin; I <= End; I += 1) {
 
-                if (((I == J2)&&((J1%2)==0)))
+                if ((I+J2+J1-3)%2 == 1) // parity selection rule
                     continue;
                 size__++;
             }
@@ -650,8 +650,8 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
 
 
 
-                if (((I == J2)&&((J%2)==0)))
-                    continue;
+                if ((I+J2+J1-3)%2 == 1)
+                    continue;// parity selection rule
 
 
                 auto TempI = CGTableI[J2-1][I-1][J-1];
@@ -901,7 +901,7 @@ std::vector<std::vector<std::complex<double>>> equivalentFeatures::SelfProductMa
         int Begin = max({(J1 - J2 + 1), J2, (J2 - n2 + J1)});
         int End = min(J1 + J2 - 1, d2);
         for (int I = Begin; I <= End; I++) {
-            if ((I == J2) && ((J1 % 2) == 0)) {
+            if ((I+J2+J1-3)%2 == 1)/*((I == J2) && ((J1 % 2) == 0))*/ {
                 continue;
             }
             size__++;
@@ -922,9 +922,9 @@ std::vector<std::vector<std::complex<double>>> equivalentFeatures::SelfProductMa
             int j3 = I - 1;
             int J = j1 + 1;
 
-            if (((I == J2) && ((J % 2) == 0))) {
+            if ((I+J2+J1-3)%2 == 1) /*(((I == J2) && ((J % 2) == 0)))*/ {
                 continue;
-            }
+            } 
 
             auto TempI = W3JTableI[J2-1][I-1][J-1];
             auto TempC = W3JTableC[J2-1][I-1][J-1];
