@@ -360,7 +360,7 @@ module  equivalentFeatures
                                    j1 = J1-1;
                                    j2 = J2-1;
                                    j3 = I -1;
-               			               J  = j1 -(I-J2)+1;
+               			           J  = j1 -(I-J2)+1;
                                   #print( [J1,J2,I]);
                                   #print("\n");
                                    TempI = CGTableI[J2,I,J];
@@ -1068,10 +1068,10 @@ module  equivalentFeatures
                  size_sum = size__  + size_sum;
                end
             end 
-
-            LTm =  Complex.(zeros(Max_size,d2*d2-(d2-1)*(d2-1)));
-            DiffJ = zeros(d2*d2-(d2-1)*(d2-1),1);
-            Result_ = zeros(Int16(size_sum),1);
+            LTm_size = max(d1*d1-(d1-1)*(d1-1),d2*d2-(d2-1)*(d2-1));
+            LTm      =   Complex.(zeros(Max_size,LTm_size));
+            #DiffJ    = zeros(d2*d2-(d2-1)*(d2-1),1);
+            Result_  = zeros(Int16(size_sum),1);
             size_sum = 1; 
 
 
@@ -1109,7 +1109,7 @@ module  equivalentFeatures
                             LTm[Index,I3] = LTm[Index,I3] + V[I1]*V[I2]*TempC[I_1][I_2];
                          end
                       end
-                          DiffJ[Index] = J;
+                         # DiffJ[Index] = J;
                           Index = Index+1;
                    end
                 end
@@ -1123,11 +1123,11 @@ module  equivalentFeatures
                          if Len > 1 
                            for I_2 in I_3:(Index-1) #for I_2 in I_3:min((Index-1),J1+I_3-1)
                            
-                              if ( abs(DiffJ[I_3]-DiffJ[I_2]) != 1 )
+                               #if ( abs(DiffJ[I_3]-DiffJ[I_2]) != 1 )
                                 Self_Product = LTm[I_3,1:Len]'*LTm[I_2,1:Len]; 
                                 Result_[size_sum] = real(Self_Product);
                                 size_sum = size_sum+1;
-                               end 
+                                #end 
                                 #print(abs(DiffJ[I_3]-DiffJ[I_2]));
                                 #print("  "); 
                                 #print(Self_Product);
