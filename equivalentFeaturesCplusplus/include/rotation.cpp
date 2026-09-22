@@ -599,8 +599,9 @@ Eigen::MatrixXcd equivalentFeatures::DecodeMatrixCompact(const std::vector<std::
 
 
 std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<std::complex<double>>& V, int n, int n2) {
+
     int32_t d2 = static_cast<int32_t>(std::floor(std::pow(V.size(), 0.5)));
-    int d1 = std::min(n,d2);
+    int     d1 = n;
     int Max_size = 0;
     int size_sum = 0;
 
@@ -627,10 +628,10 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
           size_sum = size__  + size_sum;
     }
 
-
-    std::vector<std::vector<std::complex<double>>> LTm(Max_size, std::vector<std::complex<double>>(d2 * d2 - (d2 - 1) * (d2 - 1), 0.0));
+    int LTm_size = std::max(d1 * d1 - (d1 - 1) * (d1 - 1), d2 * d2 - (d2 - 1) * (d2 - 1));
+    std::vector<std::vector<std::complex<double>>> LTm(Max_size,LTm_size);
     std::vector<std::complex<double>> LTmConj(d2 * d2 - (d2 - 1) * (d2 - 1), std::complex<double>(0.0,0.0));
-    std::vector<int> DiffJ(d2 * d2 - (d2 - 1) * (d2 - 1), 0.0);
+    //std::vector<int> DiffJ(d2 * d2 - (d2 - 1) * (d2 - 1), 0.0);
     std::vector<double> Result_(size_sum, 0);
     size_sum = 0;
 
@@ -670,7 +671,7 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
                     }
                 }
 
-                DiffJ[Index] = J;
+                //DiffJ[Index] = J;
                 Index++;
             }
         }
@@ -687,12 +688,12 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
                   if (Len > 1){
 
                      for (int I_2 = I_3; I_2 <= Index; ++I_2) {
-                      if ( abs(DiffJ[I_3-1]-DiffJ[I_2-1]) != 1 )
-                      {
+                      //if ( abs(DiffJ[I_3-1]-DiffJ[I_2-1]) != 1 )
+                      //{
                           std::complex<double> Self_Product = std::inner_product(LTmConj.begin(), LTmConj.begin() + Len, LTm[I_2-1].begin(), std::complex<double>(0.0, 0.0));
                           Result_[size_sum] = std::real(Self_Product);
                           size_sum++;
-                      }
+                     // }
                     }
                   }else
                    {
