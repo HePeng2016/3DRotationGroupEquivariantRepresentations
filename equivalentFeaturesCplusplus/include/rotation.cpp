@@ -706,7 +706,7 @@ std::vector<double> equivalentFeatures::SelfProductPairwise(const std::vector<st
             }
         }
     }
-    return std::vector<double>(Result_.begin(), Result_.begin() + size_sum);
+    return Result_;
 }
 
 
