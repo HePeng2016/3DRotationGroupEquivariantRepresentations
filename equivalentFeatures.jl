@@ -636,6 +636,40 @@ module  equivalentFeatures
                      end
                      return RInvariantV;
                  end
+        function  W3jProductIndex(n1,n2,d2,d3)
+
+                    VSize = 0;
+
+                    for I in 1:d2
+                       VSize = VSize + max(min((d3-1),(n1+I-2))-abs(n1-I)+1,0) -  max(0, min(I+n1-n2-1,min((d3-1),(n1+I-2))+1) - max(I+n2-n1+1,abs(n1-I)+1)+1);
+                    end
+
+                    Index_V = zeros(VSize,3);
+                    Index =1;
+                     for I =1:size(WignerPI)[1]
+                       if WignerPI[I,1] != n1
+                          if WignerPI[I,1] > n1
+                             break;
+                          else
+                             continue;
+                          end
+                       end
+                       if  WignerPI[I,1] > abs(WignerPI[I,2]-WignerPI[I,3])+n2
+                          continue;
+                       end 
+
+                       if WignerPI[I,2] > d2 || WignerPI[I,3] > d3
+                          continue;
+                       end
+                       Index_V[Index,1] = WignerPI[I,1];
+		               Index_V[Index,2] = WignerPI[I,2];
+		               Index_V[Index,3] = WignerPI[I,3];
+                       Index = Index+1;
+                     end
+                     return Index_V;
+                 end
+
+
 
 
 
