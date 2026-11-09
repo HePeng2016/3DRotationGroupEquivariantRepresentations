@@ -213,7 +213,8 @@ This function converts the spherical harmonic tensor V1 into a rotation-invarian
 This function will return a matrix that can be used to convert the invariant coding calculated by the W3jProductCompact function into one of the original spherical harmonic tensors (V1).  Because the length of V1 is equal to invariant coding, this matrix is therefore a square matrix. And the R2, R3 are two reference spherical harmonic tensors.
 
 e.g.
-      using LinearAlgebra
+      
+	  using LinearAlgebra
 
 
       C1 =  [0.0043477849927746155,0.0,0.9999905483381614];
@@ -268,7 +269,7 @@ ReferencesExtract,SelfProductMatrix can be used to generate the reference vector
 
 e.g 
 
-     V_input = [ 0.8462843753216345 + 0.0im, 0.49442005281239043 - 0.38003620975475416im,1.1266402071841877 + 0.0im,-0.49442005281239043 - 0.38003620975475416im,0.12624905371373815 - 0.586665146512387im,0.712812513540789 - 0.5922990542960181im,0.8306662145480092 + 0.0im,-0.712812513540789 - 0.5922990542960181im,0.12624905371373815 + 0.586665146512387im ]
+    V_input = [ 0.8462843753216345 + 0.0im, 0.49442005281239043 - 0.38003620975475416im,1.1266402071841877 + 0.0im,-0.49442005281239043 - 0.38003620975475416im,0.12624905371373815 - 0.586665146512387im,0.712812513540789 - 0.5922990542960181im,0.8306662145480092 + 0.0im,-0.712812513540789 - 0.5922990542960181im,0.12624905371373815 + 0.586665146512387im ]
     V_output = [ 0.5641895835477564 + 0.0im,0.046180362258809796-0.5151788499369871im,0.563454914288809,-0.046180362258809796-0.5151788499369871im,-0.35831018662719905 -0.036901839488305416im,0.09441424373213234-0.6546737533363572im,0.008536735434823653+0.0im,-0.09441424373213234-0.6546737533363572im,-0.35831018662719905+0.036901839488305416im]
     
       
@@ -347,6 +348,7 @@ e.g.
       ReciprocalF     = 1/f1;
       equivalentFeatures.DerivativeSH_XYZ(S,DR,ReciprocalRadii,ReciprocalF)
 The DerivativeSH function returns a matrix with two columns. One column indicates the θ and the other indicates the φ.  DerivativeSH_XYZ returns a three-column matrix indicating X, Y, and Z, respectively. 
+<!-- 
 
        equivalentFeatures.DerivativeWignerD(Y)
 
@@ -402,7 +404,7 @@ e.g.
        sum(abs.(Deriva[5:9,2] - ((wignerD(2,0.00001,0,0) - wignerD(2,0,0,0))/0.00001)*Idential[5:9]))
 
 
-Derivative of a spherical harmonic tensor with respect to orignal coordinate system using wignerD rotation as the limit of the change in the tensor divided by the $\theta$ and $\phi$ that approaches zero. 
+Derivative of a spherical harmonic tensor with respect to orignal coordinate system using wignerD rotation as the limit of the change in the tensor divided by the $\theta$ and $\phi$ that approaches zero.  -->
 
     equivalentFeatures.Derivative_direction(Y, L_max,nx, ny, nz)
 
