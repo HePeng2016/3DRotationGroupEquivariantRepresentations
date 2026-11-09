@@ -346,7 +346,78 @@ e.g.
 	  
       ReciprocalRadii = 1/r; 
       ReciprocalF     = 1/f1;
-      equivalentFeatures.DerivativeSH_XYZ(S,DR,ReciprocalRadii,ReciprocalF)
+      analytic_derivative = equivalentFeatures.DerivativeSH_XYZ(S,DR,ReciprocalRadii,ReciprocalF);
+
+	  S_bak = S; 
+      ε=1e-5
+  
+      x=0.31
+      y=0.14
+      z=0.41
+      x=x+ε;
+      r = (x^2+y^2+z^2)^0.5;
+      z  = (z/r);
+      x  = (x/r);
+      y  = (y/r);
+      V3 =[1,x,y,z]
+      S = equivalentFeatures.CtoS_Encode(V3,2);
+      S = equivalentFeatures.IncreaseDegree(S,1);
+      S = equivalentFeatures.IncreaseDegree(S,1);
+      f0 = 1;
+      f1 = r;
+      f2 = r*r;
+      f3 = r*r*r; 
+      S[1]     = S[1]*f0;
+      S[2:4]   = S[2:4]*f1; 
+      S[5:9]   = S[5:9]*f2; 
+      S[10:16] = S[10:16]*f3; 
+      sum(abs.(analytic_derivative[:,1].-((S-S_bak)/ε))) 
+
+
+      x=0.31
+      y=0.14
+      z=0.41
+      y=y+ε;
+      r = (x^2+y^2+z^2)^0.5;
+      z  = (z/r);
+      x  = (x/r);
+      y  = (y/r);
+      V3 =[1,x,y,z]
+      S = equivalentFeatures.CtoS_Encode(V3,2);
+      S = equivalentFeatures.IncreaseDegree(S,1);
+      S = equivalentFeatures.IncreaseDegree(S,1);
+      f0 = 1;
+      f1 = r;
+      f2 = r*r;
+      f3 = r*r*r; 
+      S[1]     = S[1]*f0;
+      S[2:4]   = S[2:4]*f1; 
+      S[5:9]   = S[5:9]*f2; 
+      S[10:16] = S[10:16]*f3; 
+      sum(abs.(analytic_derivative[:,2].-((S-S_bak)/ε)))
+
+
+     x=0.31
+     y=0.14
+     z=0.41
+     z=z+ε;
+     r = (x^2+y^2+z^2)^0.5;
+     z  = (z/r);
+     x  = (x/r);
+     y  = (y/r);
+     V3 =[1,x,y,z]
+     S = equivalentFeatures.CtoS_Encode(V3,2);
+     S = equivalentFeatures.IncreaseDegree(S,1);
+     S = equivalentFeatures.IncreaseDegree(S,1);
+     f0 = 1;
+     f1 = r;
+     f2 = r*r;
+     f3 = r*r*r; 
+     S[1]     = S[1]*f0;
+    S[2:4]   = S[2:4]*f1; 
+    S[5:9]   = S[5:9]*f2; 
+    S[10:16] = S[10:16]*f3; 
+    sum(abs.(analytic_derivative[:,3].-((S-S_bak)/ε)))
 The DerivativeSH function returns a matrix with two columns. One column indicates the θ and the other indicates the φ.  DerivativeSH_XYZ returns a three-column matrix indicating X, Y, and Z, respectively. 
 <!-- 
 
